@@ -53,4 +53,6 @@ const Loader = React.forwardRef<
   </div>
 ));
 
+Loader.displayName = "Loader";
+
 export default Loader;
