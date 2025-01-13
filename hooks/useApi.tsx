@@ -32,7 +32,10 @@ function useApi() {
       await client.sql`
     CREATE TABLE IF NOT EXISTS users (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
+      first_name VARCHAR(255) NOT NULL,
+      last_name VARCHAR(255) NOT NULL,
+      full_name VARCHAR(255) NOT NULL,
+      profile_pic_blob VARCHAR(255),
       email TEXT NOT NULL UNIQUE,
       password TEXT NOT NULL
     );
@@ -40,8 +43,8 @@ function useApi() {
 
       const hashedPassword = await bcryptjs.hash(user.password, 10);
       const resp = await client.sql`
-        INSERT INTO users (first_name, last_name, full_name, email, password)
-        VALUES (${user.first_name}, ${user.last_name}, ${user.first_name} ${user.last_name} ${user.email}, ${hashedPassword})
+        INSERT INTO users (first_name, last_name, full_name, email, password, profile_pic_blob)
+        VALUES (${user.first_name}, ${user.last_name}, ${user.first_name} ${user.last_name} ${user.email}, ${hashedPassword}, ${user.profile_pic_blob})
         ON CONFLICT (id) DO NOTHING;
       `;
       return Response.json({ data: resp.rows[0], status: 200 });

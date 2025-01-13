@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Loader from "@/components/ui/loader";
+import ImageDragDrop from "../sign-up/image-drag-drop";
 
 const formSchema = z.object({
   first_name: z.string().min(2),
@@ -27,6 +28,7 @@ const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   accept_terms: z.boolean(),
+  profile_pic: z.string().optional(),
 });
 
 function SignUpForm() {
@@ -56,7 +58,7 @@ function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-2 gap-2">
           <FormField
             control={form.control}
@@ -126,7 +128,7 @@ function SignUpForm() {
                   >
                     {showPassword && (
                       <Image
-                        aria-hidden
+                        aria-hidden={!showPassword}
                         src="/icons/view-off-stroke-rounded.svg"
                         alt="Hide password"
                         width={16}
@@ -135,7 +137,7 @@ function SignUpForm() {
                     )}
                     {!showPassword && (
                       <Image
-                        aria-hidden
+                        aria-hidden={showPassword}
                         src="/icons/view-stroke-rounded.svg"
                         alt="Show password"
                         width={16}
@@ -146,6 +148,40 @@ function SignUpForm() {
                 </div>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="profile_pic"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center">
+                <FormLabel className="flex-1">
+                  Profile Image{" "}
+                  <span className="font-normal text-neutral-500">{`(Optional)`}</span>
+                </FormLabel>{" "}
+                {field.value && (
+                  <Button
+                    type="button"
+                    title="Delete"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => form.resetField("profile_pic")}
+                  >
+                    <Image
+                      src="/icons/delete-02-stroke-rounded.svg"
+                      alt="Delete icon"
+                      width={16}
+                      height={16}
+                    />
+                  </Button>
+                )}
+              </div>
+              <FormControl>
+                <ImageDragDrop {...field} />
+              </FormControl>
             </FormItem>
           )}
         />

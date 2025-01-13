@@ -11,22 +11,29 @@ function SignIn() {
   return (
     <div className="p-6 flex items-center justify-center h-full w-full">
       <div className="bg-[#0E0E0E] w-full max-w-[600px] rounded-xl p-4 shadow-lg">
-        <Tabs defaultValue="sign-in" className="w-full">
-          <TabsList className="mb-4">
+        <Tabs
+          defaultValue="sign-in"
+          className="w-full flex flex-col items-center"
+        >
+          <TabsList className="mb-4 grid grid-cols-2 w-full max-w-[320px]">
             <TabsTrigger value="sign-in">Sign In</TabsTrigger>
             <TabsTrigger value="sign-up">Sign Up</TabsTrigger>
           </TabsList>
           <TabsContent value="sign-in">
             <>
-              <div className="space-y-2 mb-8">
-                <h1 className="text-xl font-semibold">Sign In</h1>
+              <div className="mb-8">
                 <p className="text-sm text-neutral-400">
                   Enter your email below to login to your account
                 </p>
               </div>
               <SignInForm />
               <div className="space-y-8 mt-8">
-                <Separator />
+                <div className="flex relative items-center justify-center">
+                  <Separator />
+                  <div className="text-neutral-500 absolute text-xs px-4 bg-[#0E0E0E]">
+                    or
+                  </div>
+                </div>
                 <div className="w-full space-y-2">
                   <Button
                     className="w-full rounded-full relative"
@@ -91,8 +98,7 @@ function SignIn() {
           </TabsContent>
           <TabsContent value="sign-up">
             <>
-              <div className="space-y-2 mb-8">
-                <h1 className="text-xl font-semibold">Sign Up</h1>
+              <div className="mb-8">
                 <p className="text-sm text-neutral-400">
                   Enter your information to create an account
                 </p>
