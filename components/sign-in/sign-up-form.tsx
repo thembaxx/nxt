@@ -157,7 +157,7 @@ function SignUpForm() {
           name="profile_pic"
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center">
+              <div className="flex items-center mb-3">
                 <FormLabel className="flex-1">
                   Profile Image{" "}
                   <span className="font-normal text-neutral-500">{`(Optional)`}</span>

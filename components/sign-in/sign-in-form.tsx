@@ -10,16 +10,27 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Loader from "@/components/ui/loader";
+import ForgotPasswordForm from "./forgot-password-form";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -30,6 +41,8 @@ const formSchema = z.object({
 function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
+    useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,7 +75,7 @@ function SignInForm() {
               <FormControl>
                 <Input
                   placeholder="name@example.com"
-                  className="text-base h-10"
+                  className="text-base"
                   {...field}
                 />
               </FormControl>
@@ -77,20 +90,41 @@ function SignInForm() {
             <FormItem>
               <div className="flex items-center">
                 <FormLabel className="font-medium flex-1">Password</FormLabel>
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="underline"
-                  type="button"
-                  disabled={loading}
+                <Dialog
+                  open={forgotPasswordDialogOpen}
+                  onOpenChange={setForgotPasswordDialogOpen}
                 >
-                  Forgot your password?
-                </Button>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="text-orange-300"
+                      type="button"
+                      disabled={loading}
+                    >
+                      Forgot your password?
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="p-4 max-w-80 md:max-w-[420px] rounded-2xl">
+                    <DialogHeader className="text-left mb-2">
+                      <DialogTitle>Forgot password</DialogTitle>
+                      <DialogDescription>
+                        An email with instructions on how to reset your password
+                        will be sent to you.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div>
+                      <ForgotPasswordForm
+                        setOpen={setForgotPasswordDialogOpen}
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
               <FormControl>
                 <div className="relative flex items-center">
                   <Input
-                    className="text-base h-10"
+                    className="text-base"
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     {...field}
@@ -141,7 +175,6 @@ function SignInForm() {
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>Remember me</FormLabel>
-                <FormDescription>Stay signed in for 90 days</FormDescription>
               </div>
             </FormItem>
           )}
@@ -154,14 +187,6 @@ function SignInForm() {
               </div>
             )}
             <span>Sign in with Email</span>
-          </Button>
-          <Button
-            className="w-full"
-            variant="secondary"
-            type="button"
-            disabled={loading}
-          >
-            Sign up for Free
           </Button>
         </div>
       </form>
