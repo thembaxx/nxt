@@ -87,4 +87,6 @@ function ImageDragDrop({ value, onChange }: Props) {
 //   });
 // }
 
+ImageDragDrop.displayName = "ImageDragDrop";
+
 export default ImageDragDrop;

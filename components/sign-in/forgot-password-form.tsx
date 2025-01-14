@@ -92,4 +92,6 @@ function ForgotPasswordForm({ setOpen }: Props) {
   );
 }
 
+ForgotPasswordForm.displayName = "ForgotPasswordForm";
+
 export default ForgotPasswordForm;

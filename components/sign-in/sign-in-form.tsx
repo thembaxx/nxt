@@ -194,4 +194,6 @@ function SignInForm() {
   );
 }
 
+SignInForm.displayName = "SignInForm";
+
 export default SignInForm;

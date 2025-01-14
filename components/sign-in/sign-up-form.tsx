@@ -229,4 +229,6 @@ function SignUpForm() {
   );
 }
 
+SignUpForm.displayName = "SignUpForm";
+
 export default SignUpForm;
