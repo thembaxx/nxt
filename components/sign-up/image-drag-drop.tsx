@@ -11,20 +11,23 @@ type Props = {
 };
 
 function ImageDragDrop({ value, onChange }: Props) {
-  const handleImageChange = useCallback(async (files: File[] | null) => {
-    if (!files) return;
+  const handleImageChange = useCallback(
+    async (files: File[] | null) => {
+      if (!files) return;
 
-    const file = files[0];
-    if (file) {
-      //   setImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        onChange(result);
-      };
-      reader.readAsDataURL(file);
-    }
-  }, []);
+      const file = files[0];
+      if (file) {
+        //   setImage(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const result = reader.result as string;
+          onChange(result);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    [onChange]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (e) => handleImageChange(e),
