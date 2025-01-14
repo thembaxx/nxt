@@ -38,7 +38,7 @@ function ImageDragDrop({ value, onChange }: Props) {
       <div
         {...getRootProps()}
         className={clsx(
-          "flex items-center justify-center py-8 border border-dotted rounded-md relative overflow-hidden",
+          "flex items-center justify-center py-8 border border-dotted rounded-md relative overflow-hidden cursor-pointer",
           isDragActive ? "border-blue-500" : "border-border"
         )}
       >

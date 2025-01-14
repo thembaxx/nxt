@@ -5,5 +5,6 @@ namespace NodeJS {
     AUTH_SECRET: string;
     AUTH_GOOGLE_CLIENT_ID: string;
     AUTH_GOOGLE_SECRET: string;
+    POSTGRES_URL: string;
   }
 }

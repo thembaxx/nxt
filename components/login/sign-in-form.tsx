@@ -10,40 +10,46 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Loader from "@/components/ui/loader";
-import ImageDragDrop from "../sign-up/image-drag-drop";
+import ForgotPasswordForm from "./forgot-password-form";
 
 const formSchema = z.object({
-  first_name: z.string().min(2),
-  last_name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(6),
-  accept_terms: z.boolean(),
-  profile_pic: z.string().optional(),
+  rememberMe: z.boolean(),
 });
 
-function SignUpForm() {
-  const [showPassword, setShowPassword] = useState(false);
+function SignInForm() {
+  const [showPassword, setShowPassword] = useState<boolean | undefined>();
   const [loading, setLoading] = useState(false);
+  const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
+    useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     disabled: loading,
     defaultValues: {
-      first_name: "",
-      last_name: "",
       email: "",
       password: "",
-      accept_terms: true,
+      rememberMe: false,
     },
   });
 
@@ -58,35 +64,7 @@ function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-2 gap-2">
-          <FormField
-            control={form.control}
-            name="first_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-medium">First name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John" className="text-base" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="last_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-medium">Last name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Doe" className="text-base" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="email"
@@ -109,12 +87,44 @@ function SignUpForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-medium flex-1">Password</FormLabel>
+              <div className="flex items-center">
+                <FormLabel className="font-medium flex-1">Password</FormLabel>
+                <Dialog
+                  open={forgotPasswordDialogOpen}
+                  onOpenChange={setForgotPasswordDialogOpen}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="text-orange-300"
+                      type="button"
+                      disabled={loading}
+                    >
+                      Forgot your password?
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="p-4 max-w-80 md:max-w-[420px] rounded-2xl">
+                    <DialogHeader className="text-left mb-2">
+                      <DialogTitle>Forgot password</DialogTitle>
+                      <DialogDescription>
+                        An email with instructions on how to reset your password
+                        will be sent to you.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div>
+                      <ForgotPasswordForm
+                        setOpen={setForgotPasswordDialogOpen}
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
               <FormControl>
                 <div className="relative flex items-center">
                   <Input
                     className="text-base"
-                    type={showPassword ? "text" : "new-password"}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     {...field}
                   />
@@ -128,7 +138,7 @@ function SignUpForm() {
                   >
                     {showPassword && (
                       <Image
-                        aria-hidden={!showPassword}
+                        aria-hidden
                         src="/icons/view-off-stroke-rounded.svg"
                         alt="Hide password"
                         width={16}
@@ -137,7 +147,7 @@ function SignUpForm() {
                     )}
                     {!showPassword && (
                       <Image
-                        aria-hidden={showPassword}
+                        aria-hidden
                         src="/icons/view-stroke-rounded.svg"
                         alt="Show password"
                         width={16}
@@ -151,43 +161,9 @@ function SignUpForm() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
-          name="profile_pic"
-          render={({ field }) => (
-            <FormItem>
-              <div className="flex items-center mb-3">
-                <FormLabel className="flex-1">
-                  Profile Image{" "}
-                  <span className="font-normal text-neutral-500">{`(Optional)`}</span>
-                </FormLabel>{" "}
-                {field.value && (
-                  <Button
-                    type="button"
-                    title="Delete"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => form.resetField("profile_pic")}
-                  >
-                    <Image
-                      src="/icons/delete-02-stroke-rounded.svg"
-                      alt="Delete icon"
-                      width={16}
-                      height={16}
-                    />
-                  </Button>
-                )}
-              </div>
-              <FormControl>
-                <ImageDragDrop {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="accept_terms"
+          name="rememberMe"
           render={({ field }) => (
             <FormItem className="flex space-x-2 space-y-0">
               <FormControl>
@@ -197,31 +173,19 @@ function SignUpForm() {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>Accept terms and conditions</FormLabel>
-                <FormDescription>
-                  You can read our terms and confitions{" "}
-                  <a
-                    href="/"
-                    target="_blank"
-                    rel="norefferer"
-                    className="font-medium underline text-blue-400"
-                  >
-                    here
-                  </a>
-                  .
-                </FormDescription>
+                <FormLabel>Remember me</FormLabel>
               </div>
             </FormItem>
           )}
         />
         <div className="space-y-2 w-full">
           <Button type="submit" className="w-full relative">
-            <span>Create an account</span>
             {loading && (
               <div className="absolute left-2">
                 <Loader />
               </div>
             )}
+            <span>Sign in with Email</span>
           </Button>
         </div>
       </form>
@@ -229,6 +193,6 @@ function SignUpForm() {
   );
 }
 
-SignUpForm.displayName = "SignUpForm";
+SignInForm.displayName = "SignInForm";
 
-export default SignUpForm;
+export default SignInForm;

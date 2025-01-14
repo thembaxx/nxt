@@ -1,11 +1,12 @@
 import { signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import SignInForm from "@/components/sign-in/sign-in-form";
-import SignUpForm from "@/components/sign-in/sign-up-form";
+import SignInForm from "@/components/login/sign-in-form";
+import SignUpForm from "@/components/login/sign-up-form";
 import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { createAccount } from "../api/auth/[...nextauth]/route";
 
 function SignIn() {
   return (
@@ -97,7 +98,12 @@ function SignIn() {
           </TabsContent>
           <TabsContent value="sign-up">
             <>
-              <SignUpForm />
+              <SignUpForm
+                submitHandler={async (user) => {
+                  "use server";
+                  return createAccount(user);
+                }}
+              />
             </>
           </TabsContent>
         </Tabs>
