@@ -25,9 +25,9 @@ function Navbar() {
           <Image
             src="/icons/menu-01-stroke-rounded.svg"
             alt="Menu"
-            width={16}
+            width={20}
             loading="eager"
-            height={16}
+            height={20}
           />
         </Button>
       </div>

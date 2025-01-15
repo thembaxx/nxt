@@ -11,7 +11,7 @@ const callbackUrl = "/home";
 
 function SignIn() {
   return (
-    <div className="p-6 flex items-center justify-center h-full w-full">
+    <div className="p-6 pt-0 flex items-center justify-center h-full w-full">
       <div className="bg-[#0E0E0E] w-full max-w-[600px] rounded-xl p-4 shadow-lg">
         <Tabs
           defaultValue="sign-in"
