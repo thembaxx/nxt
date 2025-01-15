@@ -7,9 +7,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { UploadProgressEvent } from "@vercel/blob";
 
 type Props = {
-  progress?: number;
+  uploadProgress: UploadProgressEvent | null;
   loading: boolean;
   value: File | undefined;
   onRemove: () => void;
@@ -17,7 +18,7 @@ type Props = {
 };
 
 function ImageDragDrop({
-  progress,
+  uploadProgress,
   loading,
   value,
   onRemove,
@@ -126,8 +127,11 @@ function ImageDragDrop({
                     />
                     <span>Remove image</span>
                   </Button>
-                  {loading && progress && (
-                    <Progress className="h-1" value={progress} />
+                  {loading && uploadProgress && uploadProgress.percentage && (
+                    <Progress
+                      className="h-1"
+                      value={uploadProgress.percentage}
+                    />
                   )}
                 </div>
               </div>

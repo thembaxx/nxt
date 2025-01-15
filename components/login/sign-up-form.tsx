@@ -24,6 +24,7 @@ import ImageDragDrop from "../sign-up/image-drag-drop";
 import { hash } from "bcryptjs";
 import { User } from "@/lib/definitions";
 import { toast } from "sonner";
+import { UploadProgressEvent } from "@vercel/blob";
 
 const formSchema = z.object({
   first_name: z.string().min(2),
@@ -35,13 +36,25 @@ const formSchema = z.object({
 });
 
 type Props = {
-  submitHandler: (value: User) => Promise<any | undefined>;
+  submitHandler: (
+    value: User,
+    uploadProgressCallback: (e: UploadProgressEvent) => void
+  ) => Promise<
+    | {
+        data: User;
+        error: string;
+        status: number;
+      }
+    | undefined
+  >;
 };
 
 function SignUpForm({ submitHandler }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
+  const [imageUploadProgress, setImageUploadProgress] =
+    useState<UploadProgressEvent | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,16 +77,19 @@ function SignUpForm({ submitHandler }: Props) {
 
     if (!accept_terms) return;
 
-    const resp = await submitHandler({
-      first_name,
-      last_name,
-      full_name: `${first_name} ${last_name}`,
-      name: first_name,
-      email,
-      password: await hash(password, 10),
-      image_url: file?.name ?? "",
-      file: file,
-    });
+    const resp = await submitHandler(
+      {
+        first_name,
+        last_name,
+        full_name: `${first_name} ${last_name}`,
+        name: first_name,
+        email,
+        password: await hash(password, 10),
+        image_url: file?.name ?? "",
+        file: file,
+      },
+      setImageUploadProgress
+    );
 
     if (resp && resp.status === 200) {
       toast("Success", { description: "Account has been created." });
@@ -196,6 +212,7 @@ function SignUpForm({ submitHandler }: Props) {
               <FormControl>
                 <ImageDragDrop
                   {...field}
+                  uploadProgress={imageUploadProgress}
                   loading={loading}
                   onRemove={() => form.setValue("file", undefined)}
                 />
