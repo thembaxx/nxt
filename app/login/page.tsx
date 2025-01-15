@@ -17,7 +17,7 @@ function SignIn() {
           defaultValue="sign-in"
           className="w-full flex flex-col items-center"
         >
-          <TabsList className="mb-4 grid grid-cols-2 w-full max-w-[320px]">
+          <TabsList className="mb-4 grid grid-cols-2 w-full md:max-w-[320px]">
             <TabsTrigger className="text-[13px]" value="sign-in">
               Sign In
             </TabsTrigger>
