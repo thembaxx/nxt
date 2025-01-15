@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,8 +22,9 @@ import Image from "next/image";
 import Loader from "@/components/ui/loader";
 import ImageDragDrop from "../sign-up/image-drag-drop";
 import { hash } from "bcryptjs";
-import { createAccount } from "@/app/api/auth/[...nextauth]/route";
 import { User } from "@/lib/definitions";
+import { QueryResult, QueryResultRow } from "@vercel/postgres";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   first_name: z.string().min(2),
@@ -31,16 +32,30 @@ const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   accept_terms: z.boolean(),
-  profile_pic: z.string().optional(),
+  file: z.custom<File>().optional(),
 });
 
 type Props = {
-  submitHandler: (value: User) => Promise<Response | undefined>;
+  submitHandler: (
+    value: User,
+    uploadCallback: (value: number) => void
+  ) => Promise<
+    | {
+        error?: unknown;
+        data?: QueryResult<QueryResultRow>;
+        status: number;
+      }
+    | undefined
+  >;
 };
 
 function SignUpForm({ submitHandler }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+  const [progressPercentage, setProgressPercentage] = useState(0);
+
+  useEffect(() => {}, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,28 +70,36 @@ function SignUpForm({ submitHandler }: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setError(undefined);
     setLoading(true);
 
-    const { first_name, last_name, email, password, accept_terms } = values;
+    const { first_name, last_name, email, password, accept_terms, file } =
+      values;
 
     if (!accept_terms) return;
 
-    const resp = await submitHandler({
-      id: "1",
-      first_name,
-      last_name,
-      full_name: `${first_name} ${last_name}`,
-      name: first_name,
-      email,
-      password: await hash(password, 10),
-      profile_pic_blob: values.profile_pic ?? "",
-    });
+    const resp = await submitHandler(
+      {
+        first_name,
+        last_name,
+        full_name: `${first_name} ${last_name}`,
+        name: first_name,
+        email,
+        password: await hash(password, 10),
+        image_url: file?.name ?? "",
+        file: file,
+      },
+      setProgressPercentage
+    );
 
-    if (resp) {
-      console.log(await resp.json());
-      if (resp.status === 200) {
-        // Show signed in successfully
-      }
+    if (resp && resp.status === 200) {
+      toast("Success", { description: "Account has been created." });
+    } else {
+      const error = resp?.error as Error;
+      const message =
+        error && error.message ? error.message : "Error creating account.";
+      toast("Error", { description: message });
+      setError(message);
     }
 
     setLoading(false);
@@ -145,7 +168,7 @@ function SignUpForm({ submitHandler }: Props) {
                     {...field}
                   />
                   <Button
-                    variant="ghost"
+                    variant="secondary"
                     size="icon"
                     className="p-0 absolute h-full w-12 shrink-0 top-0 right-0 rounded-l-none"
                     type="button"
@@ -180,33 +203,22 @@ function SignUpForm({ submitHandler }: Props) {
 
         <FormField
           control={form.control}
-          name="profile_pic"
+          name="file"
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center mb-3">
+              <div className="mb-2">
                 <FormLabel className="flex-1">
                   Profile Image{" "}
                   <span className="font-normal text-neutral-500">{`(Optional)`}</span>
-                </FormLabel>{" "}
-                {field.value && (
-                  <Button
-                    type="button"
-                    title="Delete"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => form.resetField("profile_pic")}
-                  >
-                    <Image
-                      src="/icons/delete-02-stroke-rounded.svg"
-                      alt="Delete icon"
-                      width={16}
-                      height={16}
-                    />
-                  </Button>
-                )}
+                </FormLabel>
               </div>
               <FormControl>
-                <ImageDragDrop {...field} />
+                <ImageDragDrop
+                  {...field}
+                  loading={loading}
+                  progress={progressPercentage}
+                  onRemove={() => form.setValue("file", undefined)}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -241,6 +253,13 @@ function SignUpForm({ submitHandler }: Props) {
           )}
         />
         <div className="space-y-2 w-full">
+          <div>
+            {error && (
+              <p className="text-[12.6px] font-semibold text-red-500 rounded-lg bg-red-100 border-2 border-red-400 py-2 px-3">
+                {error}
+              </p>
+            )}
+          </div>
           <Button
             type="submit"
             className="w-full relative"

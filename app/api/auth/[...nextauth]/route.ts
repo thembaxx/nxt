@@ -3,6 +3,13 @@ export const { GET, POST } = handlers;
 
 import type { User } from "@/lib/definitions";
 import { db } from "@vercel/postgres";
+import {
+  put,
+  UploadProgressEvent,
+  del,
+  list,
+  ListBlobResult,
+} from "@vercel/blob";
 import bcryptjs from "bcryptjs";
 
 const client = await db.connect();
@@ -20,7 +27,10 @@ async function getUser(email: string) {
   }
 }
 
-async function createAccount(user: User) {
+async function createAccount(
+  user: User,
+  progressCallback: (progress: UploadProgressEvent) => void
+) {
   if (!client) return;
 
   try {
@@ -32,22 +42,75 @@ async function createAccount(user: User) {
       last_name VARCHAR(255) NOT NULL,
       full_name VARCHAR(255) NOT NULL,
       email TEXT NOT NULL UNIQUE,
-      user_password TEXT NOT NULL
-      profile_pic_blob TEXT,
+      password TEXT NOT NULL,
+      image_url TEXT
     );
   `;
 
     const hashedPassword = await bcryptjs.hash(user.password, 10);
+    const full_name = `${user.first_name} ${user.last_name}`;
+
+    console.log(user, hashedPassword);
+
     const resp = await client.sql`
-        INSERT INTO users (first_name, last_name, full_name, email, user_password, profile_pic_blob)
-        VALUES (${user.first_name}, ${user.last_name}, ${user.first_name} ${user.last_name}, ${user.email}, ${hashedPassword}, ${user.profile_pic_blob})
-        ON CONFLICT (id) DO NOTHING;
-      `;
-    console.log({ resp });
-    return Response.json({ data: resp.rows[0], status: 200 });
+      INSERT INTO users (first_name, last_name, full_name, email, password)
+        VALUES (${user.first_name}, ${user.last_name}, ${full_name}, ${user.email}, ${hashedPassword})
+        ON CONFLICT (email) DO NOTHING
+        RETURNING *;
+        `;
+
+    if (user.file && resp && resp.rows) {
+      const blob = await put(user.image_url, user.file, {
+        access: "public",
+        onUploadProgress: (progressEvent) => {
+          progressCallback(progressEvent);
+        },
+      });
+
+      const account = resp.rows[0] as User;
+
+      if (account && blob && blob.url) {
+        await client.sql`
+        UPDATE users
+        SET image_url = ${blob.url}
+        WHERE id = ${account.id};
+        `;
+      }
+    }
+
+    return { data: resp, status: 200 };
   } catch (error) {
     console.log("Failed to create account:", error);
-    return Response.json({ error, status: 500 });
+    return { error, status: 500 };
+  }
+}
+
+export async function clearAllBlobs() {
+  try {
+    async function deleteAllBlobs() {
+      let cursor;
+
+      do {
+        const listResult: ListBlobResult = await list({
+          cursor,
+          limit: 1000,
+        });
+
+        if (listResult.blobs.length > 0) {
+          await del(listResult.blobs.map((blob) => blob.url));
+        }
+
+        cursor = listResult.cursor;
+      } while (cursor);
+
+      console.log("All blobs were deleted");
+    }
+
+    deleteAllBlobs().catch((error) => {
+      console.error("An error occurred:", error);
+    });
+  } catch (error) {
+    console.log("Error deleting blobs:", error);
   }
 }
 

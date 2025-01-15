@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createAccount } from "../api/auth/[...nextauth]/route";
+const callbackUrl = "/home";
 
 function SignIn() {
   return (
@@ -41,7 +42,9 @@ function SignIn() {
                     type="button"
                     onClick={async () => {
                       "use server";
-                      await signIn("apple");
+                      await signIn("apple", {
+                        callbackUrl,
+                      });
                     }}
                   >
                     <Image
@@ -60,7 +63,9 @@ function SignIn() {
                     type="button"
                     onClick={async () => {
                       "use server";
-                      await signIn("google");
+                      await signIn("google", {
+                        callbackUrl,
+                      });
                     }}
                   >
                     <Image
@@ -79,7 +84,9 @@ function SignIn() {
                     type="button"
                     onClick={async () => {
                       "use server";
-                      await signIn("facebook");
+                      await signIn("facebook", {
+                        callbackUrl,
+                      });
                     }}
                   >
                     <Image
@@ -99,9 +106,27 @@ function SignIn() {
           <TabsContent value="sign-up">
             <>
               <SignUpForm
-                submitHandler={async (user) => {
+                submitHandler={async (user, uploadCallback) => {
                   "use server";
-                  return createAccount(user);
+
+                  const resp = await createAccount(user, (progressEvent) => {
+                    () => uploadCallback(progressEvent.percentage);
+                    // console.log(`Loaded ${progressEvent.loaded} bytes`);
+                    // console.log(`Total ${progressEvent.total} bytes`);
+                    // console.log(`Percentage ${progressEvent.percentage}%`);
+                  });
+
+                  if (resp && resp.status === 200) {
+                    // set state
+                    const userResp = await signIn("credentials", {
+                      callbackUrl,
+                      email: user.email,
+                      password: user.password,
+                    });
+                    console.log({ userResp });
+                  }
+
+                  return resp;
                 }}
               />
             </>

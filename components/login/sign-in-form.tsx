@@ -55,8 +55,9 @@ function SignInForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
+    const { email, password } = values;
 
-    await signIn("credentials");
+    await signIn("credentials", { email, password });
     console.log(values);
 
     setLoading(false);
