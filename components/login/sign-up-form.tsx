@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,6 @@ import Loader from "@/components/ui/loader";
 import ImageDragDrop from "../sign-up/image-drag-drop";
 import { hash } from "bcryptjs";
 import { User } from "@/lib/definitions";
-import { QueryResult, QueryResultRow } from "@vercel/postgres";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -36,26 +35,13 @@ const formSchema = z.object({
 });
 
 type Props = {
-  submitHandler: (
-    value: User,
-    uploadCallback: (value: number) => void
-  ) => Promise<
-    | {
-        error?: unknown;
-        data?: QueryResult<QueryResultRow>;
-        status: number;
-      }
-    | undefined
-  >;
+  submitHandler: (value: User) => Promise<any | undefined>;
 };
 
 function SignUpForm({ submitHandler }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
-  const [progressPercentage, setProgressPercentage] = useState(0);
-
-  useEffect(() => {}, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -78,26 +64,21 @@ function SignUpForm({ submitHandler }: Props) {
 
     if (!accept_terms) return;
 
-    const resp = await submitHandler(
-      {
-        first_name,
-        last_name,
-        full_name: `${first_name} ${last_name}`,
-        name: first_name,
-        email,
-        password: await hash(password, 10),
-        image_url: file?.name ?? "",
-        file: file,
-      },
-      setProgressPercentage
-    );
+    const resp = await submitHandler({
+      first_name,
+      last_name,
+      full_name: `${first_name} ${last_name}`,
+      name: first_name,
+      email,
+      password: await hash(password, 10),
+      image_url: file?.name ?? "",
+      file: file,
+    });
 
     if (resp && resp.status === 200) {
       toast("Success", { description: "Account has been created." });
     } else {
-      const error = resp?.error as Error;
-      const message =
-        error && error.message ? error.message : "Error creating account.";
+      const message = resp?.error ? resp.error : "Error creating account.";
       toast("Error", { description: message });
       setError(message);
     }
@@ -216,7 +197,6 @@ function SignUpForm({ submitHandler }: Props) {
                 <ImageDragDrop
                   {...field}
                   loading={loading}
-                  progress={progressPercentage}
                   onRemove={() => form.setValue("file", undefined)}
                 />
               </FormControl>

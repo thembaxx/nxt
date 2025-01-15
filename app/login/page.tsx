@@ -6,7 +6,7 @@ import SignUpForm from "@/components/login/sign-up-form";
 import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createAccount } from "../api/auth/[...nextauth]/route";
+import createAccount from "../api/auth/[...nextauth]/route";
 const callbackUrl = "/home";
 
 function SignIn() {
@@ -106,15 +106,10 @@ function SignIn() {
           <TabsContent value="sign-up">
             <>
               <SignUpForm
-                submitHandler={async (user, uploadCallback) => {
+                submitHandler={async (user) => {
                   "use server";
 
-                  const resp = await createAccount(user, (progressEvent) => {
-                    () => uploadCallback(progressEvent.percentage);
-                    // console.log(`Loaded ${progressEvent.loaded} bytes`);
-                    // console.log(`Total ${progressEvent.total} bytes`);
-                    // console.log(`Percentage ${progressEvent.percentage}%`);
-                  });
+                  const resp = await createAccount(user);
 
                   if (resp && resp.status === 200) {
                     // set state

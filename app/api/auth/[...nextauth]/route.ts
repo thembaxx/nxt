@@ -3,13 +3,7 @@ export const { GET, POST } = handlers;
 
 import type { User } from "@/lib/definitions";
 import { db } from "@vercel/postgres";
-import {
-  put,
-  UploadProgressEvent,
-  del,
-  list,
-  ListBlobResult,
-} from "@vercel/blob";
+import { put, del, list, ListBlobResult } from "@vercel/blob";
 import bcryptjs from "bcryptjs";
 
 const client = await db.connect();
@@ -27,10 +21,7 @@ async function getUser(email: string) {
   }
 }
 
-async function createAccount(
-  user: User,
-  progressCallback: (progress: UploadProgressEvent) => void
-) {
+export default async function createAccount(user: User) {
   if (!client) return;
 
   try {
@@ -50,8 +41,6 @@ async function createAccount(
     const hashedPassword = await bcryptjs.hash(user.password, 10);
     const full_name = `${user.first_name} ${user.last_name}`;
 
-    console.log(user, hashedPassword);
-
     const resp = await client.sql`
       INSERT INTO users (first_name, last_name, full_name, email, password)
         VALUES (${user.first_name}, ${user.last_name}, ${full_name}, ${user.email}, ${hashedPassword})
@@ -63,7 +52,7 @@ async function createAccount(
       const blob = await put(user.image_url, user.file, {
         access: "public",
         onUploadProgress: (progressEvent) => {
-          progressCallback(progressEvent);
+          console.log(progressEvent);
         },
       });
 
@@ -78,40 +67,43 @@ async function createAccount(
       }
     }
 
-    return { data: resp, status: 200 };
+    return {
+      data: (resp?.rows[0] as User) ?? ({} as User),
+      error: "",
+      status: 200,
+    };
   } catch (error) {
     console.log("Failed to create account:", error);
-    return { error, status: 500 };
+    const err = error as Error;
+    return {
+      data: {} as User,
+      error: err?.message ?? "Error creating account",
+      status: 500,
+    };
   }
 }
 
-export async function clearAllBlobs() {
-  try {
-    async function deleteAllBlobs() {
-      let cursor;
+async function deleteAllBlobs() {
+  let cursor;
 
-      do {
-        const listResult: ListBlobResult = await list({
-          cursor,
-          limit: 1000,
-        });
+  do {
+    const listResult: ListBlobResult = await list({
+      cursor,
+      limit: 1000,
+    });
 
-        if (listResult.blobs.length > 0) {
-          await del(listResult.blobs.map((blob) => blob.url));
-        }
-
-        cursor = listResult.cursor;
-      } while (cursor);
-
-      console.log("All blobs were deleted");
+    if (listResult.blobs.length > 0) {
+      await del(listResult.blobs.map((blob) => blob.url));
     }
 
-    deleteAllBlobs().catch((error) => {
-      console.error("An error occurred:", error);
-    });
-  } catch (error) {
-    console.log("Error deleting blobs:", error);
-  }
+    cursor = listResult.cursor;
+  } while (cursor);
+
+  console.log("All blobs were deleted");
 }
 
-export { createAccount, getUser };
+deleteAllBlobs().catch((error) => {
+  console.error("Error deleting blobs:", error);
+});
+
+export { getUser };

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 type Props = {
-  progress: number;
+  progress?: number;
   loading: boolean;
   value: File | undefined;
   onRemove: () => void;
@@ -126,7 +126,9 @@ function ImageDragDrop({
                     />
                     <span>Remove image</span>
                   </Button>
-                  {loading && <Progress className="h-1" value={progress} />}
+                  {loading && progress && (
+                    <Progress className="h-1" value={progress} />
+                  )}
                 </div>
               </div>
             )}
