@@ -7,5 +7,5 @@ export interface User {
   email: string;
   password: string;
   image_url: string;
-  file?: Blob | File;
+  file?: File;
 }

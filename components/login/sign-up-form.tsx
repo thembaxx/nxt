@@ -25,21 +25,20 @@ import { hash } from "bcryptjs";
 import { User } from "@/lib/definitions";
 import { toast } from "sonner";
 import { UploadProgressEvent } from "@vercel/blob";
+import { upload } from "@vercel/blob/client";
+import { updateImageUrl } from "@/app/api/auth/user";
 
 const formSchema = z.object({
-  first_name: z.string().min(2),
-  last_name: z.string().min(2),
-  email: z.string().email(),
-  password: z.string().min(6),
-  accept_terms: z.boolean(),
+  first_name: z.string().min(2).default(""),
+  last_name: z.string().min(2).default(""),
+  email: z.string().email().default(""),
+  password: z.string().min(6).default(""),
+  accept_terms: z.boolean().default(true),
   file: z.custom<File>().optional(),
 });
 
 type Props = {
-  submitHandler: (
-    value: User,
-    uploadProgressCallback: (e: UploadProgressEvent) => void
-  ) => Promise<
+  submitHandler: (value: User) => Promise<
     | {
         data: User;
         error: string;
@@ -77,22 +76,34 @@ function SignUpForm({ submitHandler }: Props) {
 
     if (!accept_terms) return;
 
-    const resp = await submitHandler(
-      {
-        first_name,
-        last_name,
-        full_name: `${first_name} ${last_name}`,
-        name: first_name,
-        email,
-        password: await hash(password, 10),
-        image_url: file?.name ?? "",
-        file: file,
-      },
-      setImageUploadProgress
-    );
+    const resp = await submitHandler({
+      first_name,
+      last_name,
+      full_name: `${first_name} ${last_name}`,
+      name: first_name,
+      email,
+      password: await hash(password, 10),
+      image_url: file?.name ?? "",
+      file: file,
+    });
 
     if (resp && resp.status === 200) {
       toast("Success", { description: "Account has been created." });
+
+      // Upload image
+      if (file) {
+        const blob = await upload(file.name, file, {
+          access: "public",
+          handleUploadUrl: "/api/upload",
+          onUploadProgress: (progressEvent) => {
+            setImageUploadProgress(progressEvent);
+          },
+        });
+
+        if (resp.data && resp.data.id && blob && blob.url) {
+          await updateImageUrl(resp.data.id, blob.url);
+        }
+      }
     } else {
       const message = resp?.error ? resp.error : "Error creating account.";
       toast("Error", { description: message });
@@ -250,13 +261,12 @@ function SignUpForm({ submitHandler }: Props) {
           )}
         />
         <div className="space-y-2 w-full">
-          <div>
-            {error && (
-              <p className="text-[12.6px] font-semibold text-red-500 rounded-lg bg-red-100 border-2 border-red-400 py-2 px-3">
-                {error}
-              </p>
-            )}
-          </div>
+          {error && (
+            <p className="text-[12.6px] font-semibold text-red-500 rounded-lg bg-red-100 border-2 border-red-400 py-2 px-3">
+              {error}
+            </p>
+          )}
+
           <Button
             type="submit"
             className="w-full relative"

@@ -31,12 +31,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
           const user = await getUser(email);
+
           if (!user) return null;
 
           const passwordsMatch = await bcryptjs.compare(
             password,
             user.password
           );
+
           if (passwordsMatch) return user;
         }
 

@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 
-import { signIn } from "@/auth";
+import { authenticate } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,20 +32,24 @@ import Loader from "@/components/ui/loader";
 import ForgotPasswordForm from "./forgot-password-form";
 
 const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-  rememberMe: z.boolean(),
+  email: z.string().email().default(""),
+  password: z.string().min(6).default(""),
+  rememberMe: z.boolean().default(false),
 });
 
 function SignInForm() {
+  const [errorMessage, formAction, isPending] = useActionState(
+    authenticate,
+    undefined
+  );
+
   const [showPassword, setShowPassword] = useState<boolean | undefined>();
-  const [loading, setLoading] = useState(false);
   const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
     useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    disabled: loading,
+    disabled: isPending,
     defaultValues: {
       email: "",
       password: "",
@@ -53,19 +57,9 @@ function SignInForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setLoading(true);
-    const { email, password } = values;
-
-    await signIn("credentials", { email, password });
-    console.log(values);
-
-    setLoading(false);
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form action={formAction} className="space-y-8">
         <FormField
           control={form.control}
           name="email"
@@ -100,7 +94,7 @@ function SignInForm() {
                       size="sm"
                       className="text-orange-300"
                       type="button"
-                      disabled={loading}
+                      disabled={isPending}
                     >
                       Forgot your password?
                     </Button>
@@ -130,11 +124,11 @@ function SignInForm() {
                     {...field}
                   />
                   <Button
-                    variant="ghost"
+                    variant="secondary"
                     size="icon"
                     className="p-0 absolute h-full w-12 shrink-0 top-0 right-0 rounded-l-none"
                     type="button"
-                    disabled={loading}
+                    disabled={isPending}
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword && (
@@ -180,8 +174,21 @@ function SignInForm() {
           )}
         />
         <div className="space-y-2 w-full">
+          {errorMessage && (
+            <div className="flex space-x-2 rounded-lg bg-red-100 border-2 border-red-400 py-2 px-3 ">
+              <Image
+                src="/icons/alert-circle-stroke-rounded.svg"
+                alt="Error"
+                width={16}
+                height={16}
+              />
+              <p className="text-[12.6px] font-semibold text-red-500 ">
+                {errorMessage}
+              </p>
+            </div>
+          )}
           <Button type="submit" className="w-full relative">
-            {loading && (
+            {isPending && (
               <div className="absolute left-2">
                 <Loader />
               </div>

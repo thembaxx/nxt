@@ -1,12 +1,10 @@
+"use server";
+
 import type { User } from "@/lib/definitions";
 import { db } from "@vercel/postgres";
-import { put, UploadProgressEvent } from "@vercel/blob";
 import bcryptjs from "bcryptjs";
 
-export async function createAccount(
-  user: User,
-  uploadProgressCallback: (e: UploadProgressEvent) => void
-) {
+export async function createAccount(user: User) {
   const client = await db.connect();
   if (!client) return;
 
@@ -24,7 +22,13 @@ export async function createAccount(
     );
   `;
 
-    const hashedPassword = await bcryptjs.hash(user.password, 10);
+    const saltRounds = 10;
+    const salt = await bcryptjs.genSalt(saltRounds);
+    const hashedPassword = bcryptjs.hashSync(user.password, salt);
+
+    console.log("Hashed Pass:", hashedPassword);
+    // const hashedPassword = await bcryptjs.hash(user.password, 10);
+
     const full_name = `${user.first_name} ${user.last_name}`;
 
     const resp = await client.sql`
@@ -32,27 +36,19 @@ export async function createAccount(
         VALUES (${user.first_name}, ${user.last_name}, ${full_name}, ${user.email}, ${hashedPassword})
         ON CONFLICT (email) DO NOTHING
         RETURNING *;
-        `;
+        `.catch((e) => console.error(e));
 
-    if (user.file && resp && resp.rows) {
-      const blob = await put(user.image_url, user.file, {
-        access: "public",
-        onUploadProgress: uploadProgressCallback,
-      });
-
-      const account = resp.rows[0] as User;
-
-      if (account && blob && blob.url) {
-        await client.sql`
-        UPDATE users
-        SET image_url = ${blob.url}
-        WHERE id = ${account.id};
-        `;
+    let account = resp?.rows?.[0] as User;
+    if (!resp || !account) {
+      const userResp =
+        await client.sql<User>`SELECT * FROM users WHERE email=${user.email}`;
+      if (userResp && userResp.rows) {
+        account = userResp.rows[0];
       }
     }
 
     return {
-      data: (resp?.rows[0] as User) ?? ({} as User),
+      data: account ?? ({} as User),
       error: "",
       status: 200,
     };
@@ -67,17 +63,19 @@ export async function createAccount(
   }
 }
 
-export async function getUser(email: string) {
-  const client = await db.connect();
-  if (!client) return;
-
+export async function updateImageUrl(userId: string, url: string) {
   try {
-    const user =
-      await client.sql<User>`SELECT * FROM users WHERE email=${email}`;
-    return Response.json({ data: user.rows[0], status: 200 });
+    const client = await db.connect();
+    await client.sql`
+    UPDATE users
+    SET image_url = ${url}
+    WHERE id = ${userId};
+    `;
+
+    return true;
   } catch (error) {
-    console.error("Failed to fetch user:", error);
-    return Response.json({ error, status: 500 });
+    console.log(error);
+    return false;
   }
 }
 

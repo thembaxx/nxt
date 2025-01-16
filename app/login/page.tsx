@@ -14,7 +14,7 @@ function SignIn() {
     <div className="p-6 pt-0 flex items-center justify-center h-full w-full">
       <div className="bg-[#0E0E0E] w-full max-w-[600px] rounded-xl p-4 shadow-lg">
         <Tabs
-          defaultValue="sign-in"
+          defaultValue="sign-up"
           className="w-full flex flex-col items-center"
         >
           <TabsList className="mb-4 grid grid-cols-2 w-full md:max-w-[320px]">
@@ -106,22 +106,17 @@ function SignIn() {
           <TabsContent value="sign-up">
             <>
               <SignUpForm
-                submitHandler={async (user, uploadProgressCallback) => {
+                submitHandler={async (user) => {
                   "use server";
 
-                  const resp = await createAccount(
-                    user,
-                    uploadProgressCallback
-                  );
+                  const resp = await createAccount(user);
 
                   if (resp && resp.status === 200) {
+                    const formData = new FormData();
+                    formData.append("email", user.email);
+                    formData.append("password", user.password);
                     // set state
-                    const userResp = await signIn("credentials", {
-                      callbackUrl,
-                      email: user.email,
-                      password: user.password,
-                    });
-                    console.log({ userResp });
+                    await signIn("credentials", formData, { callbackUrl });
                   }
 
                   return resp;
