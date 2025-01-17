@@ -1,11 +1,10 @@
 export interface User {
-  id?: string;
-  first_name: string;
-  last_name: string;
-  full_name: string;
-  name: string;
+  id: string;
   email: string;
-  password: string;
-  image_url: string;
+  name: string;
+  image: string | null | undefined;
+  emailVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
   file?: File;
 }

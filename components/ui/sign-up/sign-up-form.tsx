@@ -21,12 +21,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Loader from "@/components/ui/loader";
 import ImageDragDrop from "../sign-up/image-drag-drop";
-import { hash } from "bcryptjs";
 import { User } from "@/lib/definitions";
 import { toast } from "sonner";
 import { UploadProgressEvent } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
-import { updateImageUrl } from "@/app/api/auth/user";
+import { authClient } from "@/lib/auth-client";
+import { useUserContext } from "@/context/user-context";
 
 const formSchema = z.object({
   first_name: z.string().min(2).default(""),
@@ -37,18 +37,9 @@ const formSchema = z.object({
   file: z.custom<File>().optional(),
 });
 
-type Props = {
-  submitHandler: (value: User) => Promise<
-    | {
-        data: User;
-        error: string;
-        status: number;
-      }
-    | undefined
-  >;
-};
+function SignUpForm() {
+  const userContext = useUserContext();
 
-function SignUpForm({ submitHandler }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -67,6 +58,25 @@ function SignUpForm({ submitHandler }: Props) {
     },
   });
 
+  async function uploadImageAsync(file: File | undefined) {
+    if (!file) return;
+
+    try {
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+        onUploadProgress: (progressEvent) => {
+          setImageUploadProgress(progressEvent);
+        },
+      });
+
+      return blob?.url;
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError(undefined);
     setLoading(true);
@@ -76,41 +86,41 @@ function SignUpForm({ submitHandler }: Props) {
 
     if (!accept_terms) return;
 
-    const resp = await submitHandler({
-      first_name,
-      last_name,
-      full_name: `${first_name} ${last_name}`,
-      name: first_name,
-      email,
-      password: await hash(password, 10),
-      image_url: file?.name ?? "",
-      file: file,
-    });
+    const name = `${first_name} ${last_name}`;
 
-    if (resp && resp.status === 200) {
-      toast("Success", { description: "Account has been created." });
+    await authClient.signUp.email(
+      {
+        name,
+        email,
+        image: await uploadImageAsync(file),
+        password,
+        callbackURL: "/home",
+      },
+      {
+        onRequest: () => {
+          setLoading(true);
+        },
+        onSuccess: (ctx) => {
+          if (ctx && ctx.data) {
+            const token = ctx.data?.token;
+            const user = ctx.data?.user as User;
+            console.log(user, token);
 
-      // Upload image
-      if (file) {
-        const blob = await upload(file.name, file, {
-          access: "public",
-          handleUploadUrl: "/api/upload",
-          onUploadProgress: (progressEvent) => {
-            setImageUploadProgress(progressEvent);
-          },
-        });
+            if (user) {
+              userContext.setUser(user);
+            }
+          }
+          toast("Success", { description: "Account has been created." });
 
-        if (resp.data && resp.data.id && blob && blob.url) {
-          await updateImageUrl(resp.data.id, blob.url);
-        }
+          setLoading(false);
+        },
+        onError: (ctx) => {
+          toast("Error", { description: ctx.error.message });
+          setError(ctx.error.message);
+          setLoading(false);
+        },
       }
-    } else {
-      const message = resp?.error ? resp.error : "Error creating account.";
-      toast("Error", { description: message });
-      setError(message);
-    }
-
-    setLoading(false);
+    );
   }
 
   return (
