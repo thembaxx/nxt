@@ -102,9 +102,8 @@ function SignUpForm() {
         },
         onSuccess: (ctx) => {
           if (ctx && ctx.data) {
-            const token = ctx.data?.token;
+            //const token = ctx.data?.token;
             const user = ctx.data?.user as User;
-            console.log(user, token);
 
             if (user) {
               userContext.setUser(user);
