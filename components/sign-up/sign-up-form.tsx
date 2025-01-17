@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Loader from "@/components/ui/loader";
-import ImageDragDrop from "../sign-up/image-drag-drop";
+import ImageDragDrop from "./image-drag-drop";
 import { User } from "@/lib/definitions";
 import { toast } from "sonner";
 import { UploadProgressEvent } from "@vercel/blob";

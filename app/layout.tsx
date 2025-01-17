@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import Navbar from "@/components/ui/nav-bar";
+import Navbar from "@/components/navbar/nav-bar";
 import { Providers } from "./providers";
 
 const geistSans = Geist({
@@ -28,17 +28,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full overflow-hidden dark`}
     >
       <body
-        className={` antialiased bg-[#1e1f20] text-[#FAFAFA] flex flex-col min-h-full`}
+        className={` antialiased bg-[#1e1f20] text-[#FAFAFA] flex flex-col min-h-full h-full`}
       >
         <Providers>
           <>
             <nav className="p-6 sticky top-0">
-              <div className="flex w-full h-14 rounded-2xl overflow-hidden shadow-lg bg-neutral-800/90 backdrop-blur-sm px-4">
-                <Navbar />
-              </div>
+              <Navbar />
             </nav>
             <main className="flex-grow">{children}</main>
             <Toaster />
