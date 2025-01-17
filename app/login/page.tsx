@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import SignInForm from "@/components/ui/sign-in/sign-in-form";
-import SignUpForm from "@/components/ui/sign-up/sign-up-form";
+import SignInForm from "@/components/sign-in/sign-in-form";
+import SignUpForm from "@/components/sign-up/sign-up-form";
 import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Loader from "@/components/ui/loader";
-import ImageDragDrop from "../sign-up/image-drag-drop";
+import ImageDragDrop from "./image-drag-drop";
 import { User } from "@/lib/definitions";
 import { toast } from "sonner";
 import { UploadProgressEvent } from "@vercel/blob";
@@ -102,9 +102,8 @@ function SignUpForm() {
         },
         onSuccess: (ctx) => {
           if (ctx && ctx.data) {
-            const token = ctx.data?.token;
+            //const token = ctx.data?.token;
             const user = ctx.data?.user as User;
-            console.log(user, token);
 
             if (user) {
               userContext.setUser(user);

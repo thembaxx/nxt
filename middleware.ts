@@ -6,7 +6,6 @@ import { NextURL } from "next/dist/server/web/next-url";
 type Session = typeof auth.$Infer.Session;
 
 export default async function authMiddleware(request: NextRequest) {
-  console.log(request);
   const { pathname } = request.nextUrl;
 
   const { data: session } = await betterFetch<Session>(
@@ -19,8 +18,6 @@ export default async function authMiddleware(request: NextRequest) {
       },
     }
   );
-
-  console.log(session);
 
   if (!session && pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", request.url));
