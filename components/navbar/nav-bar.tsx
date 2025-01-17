@@ -8,6 +8,7 @@ import { getInitials } from "@/lib/utils";
 import MenuPopover from "./menu-popover";
 import { useState } from "react";
 import clsx from "clsx";
+import Link from "next/link";
 
 function Navbar() {
   const userContext = useUserContext();
@@ -23,17 +24,19 @@ function Navbar() {
           menuOpen && "rounded-b-none"
         )}
       >
-        <div className="flex items-center space-x-2">
-          <Image
-            src="/logo.svg"
-            alt="NXT logo"
-            width={24}
-            loading="eager"
-            height={24}
-            className=""
-          />
-          <p className="font-mono font-bold text-neutral-200">NXT</p>
-        </div>
+        <Link href="/">
+          <div className="flex items-center space-x-2">
+            <Image
+              src="/logo.svg"
+              alt="NXT logo"
+              width={24}
+              loading="eager"
+              height={24}
+              className=""
+            />
+            <p className="font-mono font-bold text-neutral-200">NXT</p>
+          </div>
+        </Link>
 
         <div className="flex items-center space-x-4">
           {user && (
