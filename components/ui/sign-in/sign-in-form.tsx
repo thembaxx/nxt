@@ -1,7 +1,6 @@
 "use client";
-import { useActionState, useState } from "react";
+import { useState } from "react";
 
-import { authenticate } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,6 +29,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import Loader from "@/components/ui/loader";
 import ForgotPasswordForm from "./forgot-password-form";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+
+import { useUserContext } from "@/context/user-context";
 
 const formSchema = z.object({
   email: z.string().email().default(""),
@@ -38,10 +41,10 @@ const formSchema = z.object({
 });
 
 function SignInForm() {
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined
-  );
+  const userContext = useUserContext();
+
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [showPassword, setShowPassword] = useState<boolean | undefined>();
   const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
@@ -57,9 +60,39 @@ function SignInForm() {
     },
   });
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setError(null);
+    setIsPending(true);
+    const { email, password } = values;
+
+    await authClient.signIn.email(
+      {
+        email,
+        password,
+      },
+      {
+        onRequest: () => {
+          setIsPending(true);
+        },
+        onSuccess: (ctx) => {
+          setIsPending(false);
+
+          if (ctx && ctx.data && ctx.data.user) {
+            userContext.setUser(ctx.data.user);
+          }
+
+          toast("Success", { description: "Signed in successfuly" });
+        },
+        onError: (ctx) => {
+          setError(ctx.error.message);
+        },
+      }
+    );
+  }
+
   return (
     <Form {...form}>
-      <form action={formAction} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="email"
@@ -174,7 +207,7 @@ function SignInForm() {
           )}
         />
         <div className="space-y-2 w-full">
-          {errorMessage && (
+          {error && (
             <div className="flex space-x-2 rounded-lg bg-red-100 border-2 border-red-400 py-2 px-3 ">
               <Image
                 src="/icons/alert-circle-stroke-rounded.svg"
@@ -183,7 +216,7 @@ function SignInForm() {
                 height={16}
               />
               <p className="text-[12.6px] font-semibold text-red-500 ">
-                {errorMessage}
+                {error}
               </p>
             </div>
           )}

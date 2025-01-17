@@ -1,13 +1,12 @@
-import { signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import SignInForm from "@/components/ui/sign-in/sign-in-form";
-import SignUpForm from "@/components/ui/sign-in/sign-up-form";
+import SignUpForm from "@/components/ui/sign-up/sign-up-form";
 import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createAccount } from "../api/auth/user";
-const callbackUrl = "/home";
+import { authClient } from "@/lib/auth-client";
+const callbackURL = "/home";
 
 function LoginPage() {
   return (
@@ -42,8 +41,9 @@ function LoginPage() {
                     type="button"
                     onClick={async () => {
                       "use server";
-                      await signIn("apple", {
-                        callbackUrl,
+                      await authClient.signIn.social({
+                        provider: "apple",
+                        callbackURL,
                       });
                     }}
                   >
@@ -63,8 +63,9 @@ function LoginPage() {
                     type="button"
                     onClick={async () => {
                       "use server";
-                      await signIn("google", {
-                        callbackUrl,
+                      await authClient.signIn.social({
+                        provider: "google",
+                        callbackURL,
                       });
                     }}
                   >
@@ -84,8 +85,9 @@ function LoginPage() {
                     type="button"
                     onClick={async () => {
                       "use server";
-                      await signIn("facebook", {
-                        callbackUrl,
+                      await authClient.signIn.social({
+                        provider: "facebook",
+                        callbackURL,
                       });
                     }}
                   >
@@ -105,22 +107,7 @@ function LoginPage() {
           </TabsContent>
           <TabsContent value="sign-up">
             <>
-              <SignUpForm
-                submitHandler={async (user) => {
-                  "use server";
-                  const resp = await createAccount(user);
-
-                  // if (resp && resp.status === 200) {
-                  //   const formData = new FormData();
-                  //   formData.append("email", user.email);
-                  //   formData.append("password", user.password);
-                  //   // set state
-                  //   await signIn("credentials", formData, { callbackUrl });
-                  // }
-
-                  return resp;
-                }}
-              />
+              <SignUpForm />
             </>
           </TabsContent>
         </Tabs>
