@@ -7,7 +7,9 @@ import Google from "next-auth/providers/google";
 import Apple from "next-auth/providers/apple";
 import type { User } from "@/lib/definitions";
 import { sql } from "@vercel/postgres";
-import bcryptjs from "bcryptjs";
+import { compareHash } from "better-auth/crypto";
+
+// AUTH_SECRET
 
 async function getUser(email: string): Promise<User | undefined> {
   try {
@@ -34,10 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (!user) return null;
 
-          const passwordsMatch = await bcryptjs.compare(
-            password,
-            user.password
-          );
+          const passwordsMatch = await compareHash(password, user.password);
 
           if (passwordsMatch) return user;
         }

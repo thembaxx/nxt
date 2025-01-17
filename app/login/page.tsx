@@ -1,15 +1,15 @@
 import { signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import SignInForm from "@/components/login/sign-in-form";
-import SignUpForm from "@/components/login/sign-up-form";
+import SignInForm from "@/components/ui/sign-in/sign-in-form";
+import SignUpForm from "@/components/ui/sign-in/sign-up-form";
 import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createAccount } from "../api/auth/user";
 const callbackUrl = "/home";
 
-function SignIn() {
+function LoginPage() {
   return (
     <div className="p-6 pt-0 flex items-center justify-center h-full w-full">
       <div className="bg-[#0E0E0E] w-full max-w-[600px] rounded-xl p-4 shadow-lg">
@@ -108,16 +108,15 @@ function SignIn() {
               <SignUpForm
                 submitHandler={async (user) => {
                   "use server";
-
                   const resp = await createAccount(user);
 
-                  if (resp && resp.status === 200) {
-                    const formData = new FormData();
-                    formData.append("email", user.email);
-                    formData.append("password", user.password);
-                    // set state
-                    await signIn("credentials", formData, { callbackUrl });
-                  }
+                  // if (resp && resp.status === 200) {
+                  //   const formData = new FormData();
+                  //   formData.append("email", user.email);
+                  //   formData.append("password", user.password);
+                  //   // set state
+                  //   await signIn("credentials", formData, { callbackUrl });
+                  // }
 
                   return resp;
                 }}
@@ -130,4 +129,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default LoginPage;

@@ -2,7 +2,7 @@
 
 import type { User } from "@/lib/definitions";
 import { db } from "@vercel/postgres";
-import bcryptjs from "bcryptjs";
+import { hashPassword, compareHash } from "better-auth/crypto";
 
 export async function createAccount(user: User) {
   const client = await db.connect();
@@ -22,12 +22,11 @@ export async function createAccount(user: User) {
     );
   `;
 
-    const saltRounds = 10;
-    const salt = await bcryptjs.genSalt(saltRounds);
-    const hashedPassword = bcryptjs.hashSync(user.password, salt);
+    const p = user.password;
+    const hashedPassword = await hashPassword("abcdefgf");
 
-    console.log("Hashed Pass:", hashedPassword);
-    // const hashedPassword = await bcryptjs.hash(user.password, 10);
+    const isMatch = await compareHash("abcdefgf", hashedPassword);
+    console.log(isMatch, p, hashedPassword);
 
     const full_name = `${user.first_name} ${user.last_name}`;
 
