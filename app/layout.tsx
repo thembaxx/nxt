@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full overflow-hidden dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full dark`}
     >
       <body
         className={` antialiased bg-[#1e1f20] text-[#FAFAFA] flex flex-col min-h-full h-full`}
