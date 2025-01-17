@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col items-center justify-center pb-6 pt-0 gap-14 sm:px-16  font-[family-name:var(--font-geist-sans)]">
       <div className="text-center space-y-2">
         <p className="text-3xl mb-4">👋</p>
         <h1 className="text-2xl font-mono">
