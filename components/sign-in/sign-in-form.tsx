@@ -85,10 +85,22 @@ function SignInForm() {
         },
         onError: (ctx) => {
           setError(ctx.error.message);
+
+          // Handle the error
+          if (ctx.error.status === 403) {
+            alert("Please verify your email address");
+          }
+          //you can also show the original error message
+          alert(ctx.error.message);
         },
       }
     );
   }
+
+  // await authClient.sendVerificationEmail({
+  //   email: "user@email.com",
+  //   callbackURL: "/", // The redirect URL after verification
+  // });
 
   return (
     <Form {...form}>
@@ -134,8 +146,8 @@ function SignInForm() {
                   </DialogTrigger>
                   <DialogContent className="p-4 max-w-80 md:max-w-[420px] rounded-2xl">
                     <DialogHeader className="text-left mb-2">
-                      <DialogTitle>Forgot password</DialogTitle>
-                      <DialogDescription>
+                      <DialogTitle>Forgot password?</DialogTitle>
+                      <DialogDescription className="text-[12.8px] text-pretty">
                         An email with instructions on how to reset your password
                         will be sent to you.
                       </DialogDescription>
