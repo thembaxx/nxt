@@ -1,6 +1,8 @@
 import { betterAuth } from "better-auth";
 import { VercelPool } from "@vercel/postgres";
 import { nextCookies } from "better-auth/next-js";
+import { sendVerificationRequest } from "./utils/send-verification-request";
+import { sendResetPasswordRequest } from "./utils/send-reset-password-request";
 
 export const auth = betterAuth({
   database: new VercelPool({
@@ -14,6 +16,15 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
+    sendResetPassword: async ({ user, url, token }) => {
+      await sendResetPasswordRequest({ user, url, token });
+    },
+  },
+  requireEmailVerification: true,
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }) => {
+      await sendVerificationRequest({ user, url, token });
+    },
   },
   socialProviders: {
     apple: {

@@ -8,5 +8,6 @@ namespace NodeJS {
     AUTH_FACEBOOK_ID: string;
     AUTH_FACEBOOK_SECRET: string;
     POSTGRES_URL: string;
+    RESEND_API_KEY: string;
   }
 }

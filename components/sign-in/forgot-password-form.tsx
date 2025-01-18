@@ -8,7 +8,6 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -28,6 +28,7 @@ type Props = {
 
 function ForgotPasswordForm({ setOpen }: Props) {
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,55 +41,107 @@ function ForgotPasswordForm({ setOpen }: Props) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
 
-    console.log(values);
+    const { email } = values;
+    await authClient.forgetPassword(
+      {
+        email,
+        redirectTo: "/reset-password",
+      },
+      {
+        onRequest: () => {
+          setLoading(true);
+        },
+        onSuccess: (ctx) => {
+          setLoading(false);
 
-    setLoading(false);
-    setOpen(false);
+          if (ctx && ctx.data && ctx.data.status) {
+            setSuccess(true);
+          }
+        },
+        onError: (ctx) => {
+          //setError(ctx.error.message);
+          setSuccess(false);
+          // Handle the error
+          if (ctx.error.status === 403) {
+            alert("Please verify your email address");
+          }
+          //you can also show the original error message
+          alert(ctx.error.message);
+        },
+      }
+    );
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-medium">Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="name@example.com"
-                  className="text-base"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                The email address for your account
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="space-y-2 w-full">
-          <Button type="submit" className="w-full relative">
-            {loading && (
-              <div className="absolute left-2">
-                <Loader />
-              </div>
-            )}
-            <span>Reset password</span>
-          </Button>
+    <>
+      {success && (
+        <div className="space-y-6">
+          <div className="py-2 px-3 bg-violet-600 rounded-xl border border-violet-600">
+            <p className="text-sm text-pretty font-medium">
+              An email has been sent to{" "}
+              {form.getValues("email") ?? "the provided email"} , Please follow
+              the istructions to reset your password.
+            </p>
+          </div>
           <Button
-            type="button"
+            variant="secondary"
             className="w-full"
-            variant="outline"
-            onClick={() => setOpen(false)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(false);
+            }}
           >
-            Cancel
+            Close
           </Button>
         </div>
-      </form>
-    </Form>
+      )}
+      {!success && (
+        <Form {...form}>
+          <form className="space-y-8">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-medium">Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="name@example.com"
+                      className="text-base"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="space-y-2 w-full">
+              <Button
+                type="button"
+                className="w-full relative"
+                onClick={form.handleSubmit(onSubmit)}
+              >
+                {loading && (
+                  <div className="absolute left-2">
+                    <Loader />
+                  </div>
+                )}
+                <span>Reset password</span>
+              </Button>
+              <Button
+                type="button"
+                className="w-full"
+                variant="outline"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
+    </>
   );
 }
 
