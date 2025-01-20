@@ -63,12 +63,13 @@ function SignInForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null);
     setIsPending(true);
-    const { email, password } = values;
+    const { email, password, rememberMe } = values;
 
     const { data, error } = await authClient.signIn.email(
       {
         email,
         password,
+        rememberMe,
         callbackURL: "/home",
       },
       {
