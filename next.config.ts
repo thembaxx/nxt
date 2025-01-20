@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://nxt-gamma.vercel.app",
+            value: "https://nxt-gamma.vercel.app, http://localhost:3000",
           },
           {
             key: "Access-Control-Allow-Methods",
