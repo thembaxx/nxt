@@ -59,13 +59,24 @@ function Navbar() {
               aria-label="Menu button"
               onClick={() => setMenuOpen(!menuOpen)}
             >
-              <Image
-                src="/icons/menu-09-stroke-rounded.svg"
-                alt="Menu"
-                width={20}
-                loading="eager"
-                height={20}
-              />
+              {!menuOpen && (
+                <Image
+                  src="/icons/menu-09-stroke-rounded.svg"
+                  alt="Menu"
+                  width={20}
+                  loading="eager"
+                  height={20}
+                />
+              )}
+              {menuOpen && (
+                <Image
+                  src="/icons/cancel-01-stroke-rounded.svg"
+                  alt="Menu"
+                  width={20}
+                  loading="eager"
+                  height={20}
+                />
+              )}
             </Button>
           </motion.div>
         </div>
