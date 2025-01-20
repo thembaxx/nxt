@@ -65,7 +65,7 @@ function SignInForm() {
     setIsPending(true);
     const { email, password } = values;
 
-    await authClient.signIn.email(
+    const { data, error } = await authClient.signIn.email(
       {
         email,
         password,
@@ -85,17 +85,18 @@ function SignInForm() {
           toast("Success", { description: "Signed in successfuly" });
         },
         onError: (ctx) => {
-          setError(ctx.error.message);
-
-          // Handle the error
+          console.log(ctx);
+          setIsPending(false);
           if (ctx.error.status === 403) {
-            alert("Please verify your email address");
+            setError("Please verify your email address");
+          } else {
+            setError("Authentication failed, please try again");
           }
-          //you can also show the original error message
-          alert(ctx.error.message);
         },
       }
     );
+
+    console.log(data, error);
   }
 
   // await authClient.sendVerificationEmail({
