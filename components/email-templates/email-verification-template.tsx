@@ -1,5 +1,7 @@
 interface EmailTemplateProps {
   name: string;
+  url: string;
+  token: string;
 }
 
 export const EmailVerificationTemplate: React.FC<

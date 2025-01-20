@@ -42,7 +42,7 @@ function ForgotPasswordForm({ setOpen }: Props) {
     setLoading(true);
 
     const { email } = values;
-    const { data, error } = await authClient.forgetPassword(
+     await authClient.forgetPassword(
       {
         email,
         redirectTo: "/reset-password",

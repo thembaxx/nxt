@@ -16,6 +16,8 @@ export const sendVerificationRequest = async ({ user, url, token }: Props) => {
       subject: "YOUR EMAIL SUBJECT",
       react: EmailVerificationTemplate({
         name: user.name,
+        url,
+        token,
       }) as React.ReactElement,
     });
   } catch (error) {
