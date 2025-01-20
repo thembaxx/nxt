@@ -87,7 +87,7 @@ function Navbar() {
       {menuOpen && (
         <div
           className="fixed w-full h-full top-0 left-0 bg-black/60 backdrop-blur-xl z-20"
-          onClick={() => setMenuOpen(menuOpen)}
+          onClick={() => setMenuOpen(!menuOpen)}
         />
       )}
     </div>
