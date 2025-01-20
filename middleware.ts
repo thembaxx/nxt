@@ -33,5 +33,5 @@ export default async function authMiddleware(request: NextRequest) {
 
 export const config = {
   // Protect dashboard route and sub-routes
-  matcher: ["/home", "/login"],
+  matcher: ["/home", "/login", "/checkout"],
 };

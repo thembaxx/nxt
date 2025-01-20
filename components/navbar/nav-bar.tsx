@@ -1,18 +1,21 @@
 "use client";
 
+import * as motion from "motion/react-client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUserContext } from "@/context/user-context";
 import { getInitials } from "@/lib/utils";
 import MenuPopover from "./menu-popover";
 import { useState } from "react";
 import clsx from "clsx";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { User } from "@/lib/definitions";
 
 function Navbar() {
-  const userContext = useUserContext();
-  const user = userContext?.user;
+  const session = authClient.useSession();
+  const user = session?.data?.user as User;
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -20,7 +23,7 @@ function Navbar() {
     <div className="w-full">
       <div
         className={clsx(
-          "px-4 w-full flex items-center overflow-hidden justify-between h-14 rounded-2xl shadow-lg bg-neutral-800/90 backdrop-blur-sm",
+          "px-4 w-full relative z-50 flex items-center overflow-hidden justify-between h-14 rounded-2xl shadow-lg bg-neutral-800/90 backdrop-blur-sm",
           menuOpen && "rounded-b-none"
         )}
       >
@@ -40,7 +43,7 @@ function Navbar() {
 
         <div className="flex items-center space-x-4">
           {user && (
-            <Avatar className="h-8 w-8 ">
+            <Avatar className="h-9 w-9">
               {user.image && <AvatarImage src={user.image} />}
               <AvatarFallback className="text-[11px] text-neutral-400 font-semibold bg-black/15">
                 {getInitials(user.name)}
@@ -48,26 +51,44 @@ function Navbar() {
             </Avatar>
           )}
 
-          <Button
-            size="icon"
-            variant="ghost"
-            className="relative p-0"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <Image
-              src="/icons/menu-09-stroke-rounded.svg"
-              alt="Menu"
-              width={20}
-              loading="eager"
-              height={20}
-            />
-          </Button>
+          <motion.div whileTap={{ scale: 0.95 }}>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="relative p-0"
+              aria-label="Menu button"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <Image
+                src="/icons/menu-09-stroke-rounded.svg"
+                alt="Menu"
+                width={20}
+                loading="eager"
+                height={20}
+              />
+            </Button>
+          </motion.div>
         </div>
       </div>
       {menuOpen && (
-        <div className="relative bg-neutral-800/90 backdrop-blur-sm w-full -mt-px z-10 overflow-hidden rounded-b-2xl shadow-lg">
+        <motion.div
+          layout
+          transition={{
+            type: "spring",
+            visualDuration: 0.2,
+            bounce: 0.2,
+          }}
+          className="relative bg-neutral-800/90 backdrop-blur-sm w-full -mt-px z-50 overflow-hidden rounded-b-2xl shadow-lg"
+        >
           <MenuPopover user={user} open={menuOpen} setOpen={setMenuOpen} />
-        </div>
+        </motion.div>
+      )}
+
+      {menuOpen && (
+        <div
+          className="fixed w-full h-full top-0 left-0 bg-black/60 backdrop-blur-xl z-20"
+          onClick={() => setMenuOpen(menuOpen)}
+        />
       )}
     </div>
   );

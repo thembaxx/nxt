@@ -35,7 +35,7 @@ export default function RootLayout({
       >
         <Providers>
           <>
-            <nav className="p-6 top-0 w-full flex-1 flex left-0 fixed">
+            <nav className="p-6 top-0 w-full flex-1 flex left-0 fixed z-50">
               <Navbar />
             </nav>
             <main className="flex-grow pt-24">{children}</main>
