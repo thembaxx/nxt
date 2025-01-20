@@ -3,7 +3,6 @@
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Logout03Icon } from "hugeicons-react";
 import { Separator } from "@/components/ui/separator";
 import { User } from "better-auth";
 import Link from "next/link";
@@ -18,38 +17,38 @@ type Props = {
 function MenuPopover({ user, setOpen }: Props) {
   const router = useRouter();
   return (
-    <div className="flex flex-col w-full py-4">
+    <div className="flex flex-col w-full pt-4">
       <Link
         href={"/about"}
-        className="h-10 flex w-full items-center space-x-2 px-4 text-sm text-neutral-300 font-medium  hover:bg-white/[0.03]"
+        className="h-11 flex w-full items-center space-x-2 px-4 text-sm text-neutral-300 font-medium hover:bg-white/[0.03]"
       >
         <Image
           aria-hidden
           src="/icons/information-square-stroke-rounded.svg"
           alt="Settings Icon"
-          height={16}
-          width={16}
+          height={20}
+          width={20}
         />
         <span>About</span>
       </Link>
       <Link
         href={"/about"}
-        className="h-10 flex w-full items-center space-x-2 px-4 text-sm text-neutral-300 font-medium  hover:bg-white/[0.03]"
+        className="h-11 flex w-full items-center space-x-2 px-4 text-sm text-neutral-300 font-medium hover:bg-white/[0.03]"
       >
         <Image
           aria-hidden
           src="/icons/settings-02-stroke-rounded.svg"
           alt="Settings Icon"
-          height={16}
-          width={16}
+          height={20}
+          width={20}
         />
 
         <span>Preferences</span>
       </Link>
-      {user && <Separator />}
+      {user && <Separator className="w-full bg-neutral-700" />}
       {user && (
         <Button
-          className="h-10 flex w-full justify-start items-center space-x-2 p-0 text-red-400 hover:bg-white/[0.03] hover:text-red-500 rounded-none px-4"
+          className="h-11 flex w-full justify-start items-center space-x-2 gap-0 p-0 text-red-400 hover:bg-white/[0.03] hover:text-red-500 rounded-none px-4"
           variant="ghost"
           onClick={async () =>
             await authClient.signOut({
@@ -62,11 +61,12 @@ function MenuPopover({ user, setOpen }: Props) {
             })
           }
         >
-          <Logout03Icon
-            strokeWidth={2}
+          <Image
+            aria-hidden
+            src="/icons/logout-03-stroke-rounded.svg"
+            alt="Logout Icon"
             height={20}
             width={20}
-            className="shrink-0"
           />
           <span className="font-semibold">Sign out</span>
         </Button>
