@@ -17,7 +17,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="w-full sticky top-0">
+    <div className="w-full">
       <div
         className={clsx(
           "px-4 w-full flex items-center overflow-hidden justify-between h-14 rounded-2xl shadow-lg bg-neutral-800/90 backdrop-blur-sm",
@@ -25,7 +25,7 @@ function Navbar() {
         )}
       >
         <Link href="/">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <Image
               src="/logo.svg"
               alt="NXT logo"
@@ -34,15 +34,15 @@ function Navbar() {
               height={24}
               className=""
             />
-            <p className="font-mono font-bold text-neutral-200">NXT</p>
+            <p className="font-mono font-bold text-xs text-neutral-200">NXT</p>
           </div>
         </Link>
 
         <div className="flex items-center space-x-4">
           {user && (
-            <Avatar className="h-8 w-8">
+            <Avatar className="h-8 w-8 ">
               {user.image && <AvatarImage src={user.image} />}
-              <AvatarFallback className="text-[11px]">
+              <AvatarFallback className="text-[11px] text-neutral-400 font-semibold bg-black/15">
                 {getInitials(user.name)}
               </AvatarFallback>
             </Avatar>
@@ -55,7 +55,7 @@ function Navbar() {
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <Image
-              src="/icons/menu-01-stroke-rounded.svg"
+              src="/icons/menu-09-stroke-rounded.svg"
               alt="Menu"
               width={20}
               loading="eager"

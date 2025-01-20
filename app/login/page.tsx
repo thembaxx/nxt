@@ -10,8 +10,8 @@ const callbackURL = "/home";
 
 function LoginPage() {
   return (
-    <div className="p-6 pt-0 flex items-center justify-center h-full w-full">
-      <div className="bg-[#0E0E0E] w-full max-w-[600px] rounded-xl p-4 shadow-lg">
+    <div className="px-6 flex  justify-center w-full">
+      <div className="bg-[#0E0E0E] w-full max-w-[600px] rounded-xl p-4 shadow-xl">
         <Tabs
           defaultValue="sign-up"
           className="w-full flex flex-col items-center"
