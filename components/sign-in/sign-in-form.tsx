@@ -69,6 +69,7 @@ function SignInForm() {
       {
         email,
         password,
+        callbackURL: "/home",
       },
       {
         onRequest: () => {

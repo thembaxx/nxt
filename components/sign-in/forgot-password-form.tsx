@@ -42,7 +42,7 @@ function ForgotPasswordForm({ setOpen }: Props) {
     setLoading(true);
 
     const { email } = values;
-    await authClient.forgetPassword(
+     await authClient.forgetPassword(
       {
         email,
         redirectTo: "/reset-password",
@@ -59,9 +59,8 @@ function ForgotPasswordForm({ setOpen }: Props) {
           }
         },
         onError: (ctx) => {
-          //setError(ctx.error.message);
           setSuccess(false);
-          // Handle the error
+
           if (ctx.error.status === 403) {
             alert("Please verify your email address");
           }

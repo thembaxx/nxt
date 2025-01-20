@@ -6,8 +6,11 @@ export default function Home() {
     <div className="flex flex-col items-center h-full overflow-hidden justify-center pb-6 pt-0 gap-14 sm:px-16  font-[family-name:var(--font-geist-sans)]">
       <div className="text-center space-y-2">
         <p className="text-3xl mb-4">👋</p>
-        <h1 className="text-2xl font-mono">
-          Welcome <span className="font-medium">NXT—Lia</span>n
+        <h1 className="text-xl font-mono font-semibold">
+          <span className="text-[10px] font-semibold uppercase text-neutral-300">
+            Welcome
+          </span>{" "}
+          <span className="font-medium">NXT—Lia</span>n
         </h1>
         <p className="text-sm text-neutral-400 text-pretty max-w-[275px]">
           Take a look around by logging in a playing some of my Demo projects.

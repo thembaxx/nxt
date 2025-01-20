@@ -28,17 +28,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full w-full dark`}
     >
       <body
-        className={` antialiased bg-[#1e1f20] text-[#FAFAFA] flex flex-col min-h-full h-full`}
+        className={` antialiased bg-[#1e1f20] text-[#FAFAFA] flex flex-col w-full min-h-full h-full`}
       >
         <Providers>
           <>
-            <nav className="p-6 sticky top-0">
+            <nav className="p-6 top-0 w-full flex-1 flex left-0 fixed">
               <Navbar />
             </nav>
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow pt-24">{children}</main>
             <Toaster />
           </>
         </Providers>

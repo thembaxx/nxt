@@ -1,5 +1,3 @@
-"use server";
-
 import { User } from "better-auth";
 import { resend } from "../resend";
 import ResetPasswordEmailTemplate from "@/components/email-templates/reset-password-template";
@@ -12,8 +10,7 @@ type Props = {
 
 export const sendResetPasswordRequest = async ({ user, url, token }: Props) => {
   try {
-    console.log(process.env.RESEND_API_KEY);
-    await resend.emails.send({
+    const resp = await resend.emails.send({
       from: "NXT <support@nxt.io>",
       to: [user.email],
       subject: "NXT Password Reset",
@@ -23,7 +20,10 @@ export const sendResetPasswordRequest = async ({ user, url, token }: Props) => {
         token,
       }) as React.ReactElement,
     });
+    console.log(resp);
+    return resp;
   } catch (error) {
     console.log({ error });
+    return null;
   }
 };
