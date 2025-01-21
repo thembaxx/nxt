@@ -18,7 +18,7 @@ export default function Home() {
         <div className="flex justify-center pt-6">
           <Link
             href={"/login"}
-            className="rounded-2xl relative bg-violet-600 shadow-2xl space-x-3 font-medium py-2 pr-6 pl-2 items-center flex justify-center text-primary-white"
+            className="rounded-2xl relative shadow-2xl space-x-3 font-medium py-2 pr-6 pl-2 items-center flex justify-center bg-[#fafafa] text-primary-foreground"
           >
             <div className="relative">
               <Image
