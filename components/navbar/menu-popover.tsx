@@ -4,9 +4,12 @@ import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import { User } from "better-auth";
+
 import Link from "next/link";
 import Image from "next/image";
+import ProfileCard from "../profile-card";
+import { User } from "@/lib/definitions";
+import appConfig from "@/config/app.config.json";
 
 type Props = {
   user: User | null;
@@ -17,7 +20,13 @@ type Props = {
 function MenuPopover({ user, setOpen }: Props) {
   const router = useRouter();
   return (
-    <div className="flex flex-col w-full pt-4">
+    <div className="flex flex-col w-full pt-4 space-y-2">
+      {user && (
+        <div className="py-3 px-4">
+          <ProfileCard user={user} />
+        </div>
+      )}
+      {user && <Separator className="w-full bg-neutral-700" />}
       <Link
         href={"/about"}
         className="h-11 flex w-full items-center space-x-2 px-4 text-sm text-neutral-300 font-medium hover:bg-white/[0.03]"
@@ -71,6 +80,11 @@ function MenuPopover({ user, setOpen }: Props) {
           <span className="font-semibold">Sign out</span>
         </Button>
       )}
+      <div className="pb-4 px-4">
+        <p className="text-xs text-neutral-400 font-mono">{`Version ${
+          appConfig.version
+        } © ${new Date().getFullYear()} ${appConfig.name}`}</p>
+      </div>
     </div>
   );
 }
