@@ -1,5 +1,5 @@
 import { User } from "better-auth";
-import { resend } from "../resend";
+import { resend } from "../lib/resend";
 import ResetPasswordEmailTemplate from "@/components/email-templates/reset-password-template";
 
 type Props = {

@@ -86,12 +86,16 @@ function SignInForm() {
           toast("Success", { description: "Signed in successfuly" });
         },
         onError: (ctx) => {
-          console.log(ctx);
+          console.log(ctx.error);
           setIsPending(false);
           if (ctx.error.status === 403) {
-            setError("Please verify your email address");
+            setError(
+              `403 Forbidden error: ${ctx.error?.message ?? " Unauthorized"}`
+            );
           } else {
-            setError("Authentication failed, please try again");
+            setError(
+              ctx?.error?.message ?? "Authentication failed, please try again"
+            );
           }
         },
       }
