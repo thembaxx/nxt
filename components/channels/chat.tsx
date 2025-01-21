@@ -11,8 +11,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
+import { User } from "@/lib/definitions";
 
 function Chat() {
+  const session = authClient.useSession();
+  const user = session?.data?.user as User;
+
   const [activeChannel, setActiveChannel] = useState("default");
   const [query, setQuery] = useState("default");
   const [messages, setMessages] = useState<Ably.Message[]>([]);
@@ -69,7 +74,11 @@ function Chat() {
           <ul className="flex flex-col space-y-4">
             {messages.map((message, index) => (
               <li key={message.id ?? index}>
-                <ChatMessageCard message={message} isSent={index % 2 === 0} />
+                <ChatMessageCard
+                  user={user}
+                  message={message}
+                  isSent={index % 2 === 0}
+                />
               </li>
             ))}
           </ul>

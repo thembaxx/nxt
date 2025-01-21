@@ -1,10 +1,12 @@
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { User } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import * as Ably from "ably";
 import clsx from "clsx";
 import Image from "next/image";
 
 interface ChatMessageCardProps {
+  user: User;
   message: Ably.Message;
   isSent: boolean;
 }
@@ -20,7 +22,11 @@ const avatarStyle = [
   "bg-[#AEB6BF] text-white",
 ];
 
-export function ChatMessageCard({ message, isSent }: ChatMessageCardProps) {
+export function ChatMessageCard({
+  user,
+  message,
+  isSent,
+}: ChatMessageCardProps) {
   return (
     <div
       className={cn(
@@ -34,13 +40,15 @@ export function ChatMessageCard({ message, isSent }: ChatMessageCardProps) {
           avatarStyle[Math.floor(Math.random() * avatarStyle.length)]
         )}
       >
-        {/* <AvatarImage src={message?.} alt={name} /> */}
-        <Image
-          src="/icons/user-stroke-rounded.svg"
-          alt=""
-          height={20}
-          width={20}
-        />
+        {user && user.image && <AvatarImage src={user.image} alt="" />}
+        {(!user || !user.image) && (
+          <Image
+            src="/icons/user-stroke-rounded.svg"
+            alt=""
+            height={16}
+            width={16}
+          />
+        )}
       </Avatar>
       <div
         className={cn(
@@ -48,6 +56,11 @@ export function ChatMessageCard({ message, isSent }: ChatMessageCardProps) {
           isSent ? "items-end" : "items-start"
         )}
       >
+        {user && user.name && (
+          <p className="text-xs text-neutral-300 font-medium mb-2">
+            {user.name}
+          </p>
+        )}
         <div
           className={cn(
             "rounded-lg px-3 py-2 text-sm",
