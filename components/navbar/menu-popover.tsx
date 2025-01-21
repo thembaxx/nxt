@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ProfileCard from "../profile-card";
 import { User } from "@/lib/definitions";
+import appConfig from "@/config/app.config.json";
 
 type Props = {
   user: User | null;
@@ -79,6 +80,11 @@ function MenuPopover({ user, setOpen }: Props) {
           <span className="font-semibold">Sign out</span>
         </Button>
       )}
+      <div className="pb-4 px-4">
+        <p className="text-xs text-neutral-400 font-mono">{`Version ${
+          appConfig.version
+        } © ${new Date().getFullYear()} ${appConfig.name}`}</p>
+      </div>
     </div>
   );
 }

@@ -30,9 +30,9 @@ function ProfileCard({ user }: Props) {
         <Image
           src="/icons/square-arrow-up-right-02-stroke-rounded.svg"
           alt="Profile"
-          width={24}
+          width={20}
           loading="eager"
-          height={24}
+          height={20}
         />
       </Button>
     </div>
