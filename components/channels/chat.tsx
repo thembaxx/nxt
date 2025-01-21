@@ -2,39 +2,69 @@
 
 import * as Ably from "ably";
 import { useChannel, useConnectionStateListener } from "ably/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ablyClient } from "@/lib/ably-client";
 import { ChatMessageCard } from "./chat-message-card";
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react";
-import { Textarea } from "../ui/textarea";
+import { CornerDownLeft, Mic, Paperclip, PlusIcon } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import Image from "next/image";
 
 function Chat() {
-  //   const [activeChannel, setActiveChannel] = useState("default");
+  const [activeChannel, setActiveChannel] = useState("default");
+  const [query, setQuery] = useState("default");
   const [messages, setMessages] = useState<Ably.Message[]>([]);
   const [value, setValue] = useState("");
 
-  useEffect(() => {
-    ablyClient.channels.get("default");
-  }, []);
-
   useConnectionStateListener("connected", () => {
-    console.log("Connected to Ably!");
+    toast("Connected to Ably");
   });
 
   // Create a channel called 'get-started' and subscribe to all messages with the name 'first' using the useChannel hook
-  const { channel } = useChannel("default", (message) => {
+  const { channel } = useChannel(activeChannel, (message) => {
     setMessages((previousMessages) => [...previousMessages, message]);
   });
 
   async function sendMessage() {
-    await channel.publish({ name: "default", data: value });
+    await channel.publish({ name: activeChannel, data: value });
     setValue("");
   }
 
   return (
-    <div className="flex flex-col h-full space-y-2">
-      <div className="flex-grow bg-neutral-900 rounded-xl p-6">
+    <div className="flex flex-col h-full space-y-2 overflow-hidden">
+      <div className="relative rounded-lg overflow-hidden flex items-center">
+        <label htmlFor="channel_input" className="absolute left-4">
+          <Image
+            src="/icons/rss-stroke-rounded.svg"
+            alt=""
+            height={20}
+            width={20}
+          />
+        </label>
+        <Input
+          id="channel_input"
+          value={query}
+          type="text"
+          placeholder="Create or join a channel"
+          className="bg-neutral-800 text-base h-10 pl-12 pr-14"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <Button
+          className="absolute h-full w-12 right-0 rounded-l-none top-0 bg-neutral-900/70"
+          variant="secondary"
+          size="icon"
+          disabled={!query}
+          onClick={() => {
+            setActiveChannel(query);
+            ablyClient.channels.get(activeChannel);
+          }}
+        >
+          <PlusIcon />
+        </Button>
+      </div>
+      <div className="flex-grow bg-neutral-900 rounded-xl p-6 overflow-y-auto">
         {messages && messages.length > 0 && (
           <ul className="flex flex-col space-y-4">
             {messages.map((message, index) => (
