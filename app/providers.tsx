@@ -1,7 +1,7 @@
 "use client";
 
 import { UserContextProvider } from "@/context/user-context";
-import { AblyProvider, ChannelProvider } from "ably/react";
+import { AblyProvider } from "ably/react";
 import { ablyClient } from "@/lib/ably-client";
 
 export function Providers({ children }: { children: React.ReactNode }) {

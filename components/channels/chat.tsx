@@ -10,7 +10,7 @@ import { CornerDownLeft, Mic, Paperclip } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 
 function Chat() {
-  const [activeChannel, setActiveChannel] = useState("default");
+  //   const [activeChannel, setActiveChannel] = useState("default");
   const [messages, setMessages] = useState<Ably.Message[]>([]);
   const [value, setValue] = useState("");
 
