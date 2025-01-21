@@ -33,7 +33,7 @@ function Chat() {
   }
 
   return (
-    <div className="flex flex-col h-full space-y-2 overflow-hidden">
+    <div className="flex flex-col h-full space-y-2 ">
       <div className="relative rounded-lg overflow-hidden flex items-center">
         <label htmlFor="channel_input" className="absolute left-4">
           <Image
