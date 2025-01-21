@@ -42,7 +42,7 @@ function Navbar() {
         </Link>
 
         <div className="flex items-center space-x-4">
-          {user && (
+          {user && !menuOpen && (
             <Avatar className="h-9 w-9">
               {user.image && <AvatarImage src={user.image} />}
               <AvatarFallback className="text-[11px] text-neutral-400 font-semibold bg-black/15">
