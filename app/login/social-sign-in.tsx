@@ -48,18 +48,18 @@ function SocialSignIn() {
         variant="outline"
         type="button"
         onClick={async () => {
-          await socialSignIn("facebook");
+          await socialSignIn("github");
         }}
       >
         <Image
           aria-hidden
-          src="/brands/facebook.svg"
-          alt="Facebook logo"
+          src="/brands/Github_dark.svg"
+          alt="GitHub logo"
           width={16}
           height={16}
           className="absolute left-3"
         />
-        <span>Continue with Facebook</span>
+        <span>Continue with GitHub</span>
       </Button>
     </div>
   );
