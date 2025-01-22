@@ -4,8 +4,6 @@ import { socialSignIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-const callbackURL = "/home";
-
 function SocialSignIn() {
   return (
     <div className="w-full space-y-2">

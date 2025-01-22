@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import SignInForm from "@/components/sign-in/sign-in-form";
 import SignUpForm from "@/components/sign-up/sign-up-form";
 import { Separator } from "@/components/ui/separator";
