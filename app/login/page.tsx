@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import SignInForm from "@/components/sign-in/sign-in-form";
@@ -5,8 +7,8 @@ import SignUpForm from "@/components/sign-up/sign-up-form";
 import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { authClient } from "@/lib/auth-client";
-const callbackURL = "/home";
+
+import SocialSignIn from "./social-sign-in";
 
 function LoginPage() {
   return (
@@ -34,74 +36,7 @@ function LoginPage() {
                     or
                   </div>
                 </div>
-                <div className="w-full space-y-2">
-                  <Button
-                    className="w-full rounded-full relative"
-                    variant="outline"
-                    type="button"
-                    onClick={async () => {
-                      "use server";
-                      await authClient.signIn.social({
-                        provider: "apple",
-                        callbackURL,
-                      });
-                    }}
-                  >
-                    <Image
-                      aria-hidden
-                      src="/brands/apple_dark.svg"
-                      alt="Apple logo"
-                      width={16}
-                      height={16}
-                      className="absolute left-3"
-                    />
-                    <span>Continue with Apple</span>
-                  </Button>
-                  <Button
-                    className="w-full rounded-full relative"
-                    variant="outline"
-                    type="button"
-                    onClick={async () => {
-                      "use server";
-                      await authClient.signIn.social({
-                        provider: "google",
-                        callbackURL,
-                      });
-                    }}
-                  >
-                    <Image
-                      aria-hidden
-                      src="/brands/google.svg"
-                      alt="Google logo"
-                      width={16}
-                      height={16}
-                      className="absolute left-3"
-                    />
-                    <span>Continue with Google</span>
-                  </Button>
-                  <Button
-                    className="w-full rounded-full relative"
-                    variant="outline"
-                    type="button"
-                    onClick={async () => {
-                      "use server";
-                      await authClient.signIn.social({
-                        provider: "facebook",
-                        callbackURL,
-                      });
-                    }}
-                  >
-                    <Image
-                      aria-hidden
-                      src="/brands/facebook.svg"
-                      alt="Google logo"
-                      width={16}
-                      height={16}
-                      className="absolute left-3"
-                    />
-                    <span>Continue with Facebook</span>
-                  </Button>
-                </div>
+                <SocialSignIn />
               </div>
             </>
           </TabsContent>

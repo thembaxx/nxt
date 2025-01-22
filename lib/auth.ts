@@ -32,8 +32,8 @@ export const auth = betterAuth({
       clientSecret: process.env.AUTH_APPLE_SECRET,
     },
     google: {
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      clientId: process.env.AUTH_GOOGLE_ID as string,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
     },
     facebook: {
       clientId: process.env.AUTH_FACEBOOK_ID,
