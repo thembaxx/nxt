@@ -22,7 +22,7 @@ export default function NotFound() {
       </div>
       <div className="text-center text-sm">
         <p className="font-medium text-neutral-200">
-          We couldn't find the page you were looking for.
+          {"We couldn't find the page you were looking for."}
         </p>
         <p>
           Head back to the{" "}
