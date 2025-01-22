@@ -1,27 +1,40 @@
 import VerifyEmail from "@/components/verify-email";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 async function page() {
   return (
     <div className="flex justify-center">
-      <div className="p-6 space-y-4 md:max-w-md">
+      <div className="p-6 flex flex-col gap-3 md:max-w-md">
         <VerifyEmail />
-        <Link
-          href="/channels"
-          replace
-          className="h-11 flex items-center relative justify-center rounded-full bg-secondary border border-neutral-700 shadow-md"
-        >
-          <Image
-            aria-hidden
-            src="/brands/ably.svg"
-            alt="Ably logo"
-            width={20}
-            height={20}
-            className="absolute left-4"
-          />
-          <span className="text-sm">Ably Channels</span>
-        </Link>
+        <div className="grid grid-cols-2 w-full">
+          <Link href="/channels" replace>
+            <div className="group h-auto space-y-8 py-4 px-4 text-left relative justify-center rounded-xl bg-neutral-900 border border-neutral-800 shadow-md">
+              <Image
+                aria-hidden
+                src="/brands/ably.svg"
+                alt="Ably logo"
+                width={24}
+                height={24}
+              />
+              <div className="flex items-center space-x-4">
+                <div className="space-y-1 flex-grow">
+                  <h3 className="text-sm font-medium">Ably Channels</h3>
+                  <p className="whitespace-break-spaces text-[13px] font-normal text-muted-foreground">
+                    Realtime chat
+                  </p>
+                </div>
+                <ChevronRight
+                  className="opacity-60 transition-transform group-hover:translate-x-0.5"
+                  size={16}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   );

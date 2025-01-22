@@ -39,9 +39,9 @@ function VerifyEmail() {
     return null;
 
   return (
-    <div className="bg-neutral-900 shadow-lg rounded-2xl p-4">
+    <div className="bg-neutral-900 border border-orange-300 shadow-lg rounded-2xl p-4">
       <div className="space-y-2">
-        <h1 className="font-bold text-xl">
+        <h1 className="font-bold text-base">
           {"First, let's verify your email"}
         </h1>
         <p className="text-sm text-neutral-400 font-medium text-pretty">
