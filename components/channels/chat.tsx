@@ -59,17 +59,19 @@ function Chat() {
             ))}
           </ul>
         )}
-        <div className="h-full space-y-4 flex flex-col items-center justify-center">
-          <Image
-            src="icons/tv-fix-stroke-rounded.svg"
-            alt=""
-            height={64}
-            width={64}
-          />
-          <p className="text-sm text-neutral-400 text-center text-pretty max-w-48">
-            Create a channel and send a message to get started.
-          </p>
-        </div>
+        {(!messages || messages.length === 0) && (
+          <div className="h-full space-y-4 flex flex-col items-center justify-center">
+            <Image
+              src="icons/tv-fix-stroke-rounded.svg"
+              alt=""
+              height={64}
+              width={64}
+            />
+            <p className="text-sm text-neutral-400 text-center text-pretty max-w-48">
+              Create a channel and send a message to get started.
+            </p>
+          </div>
+        )}
       </div>
       <div className="relative rounded-lg overflow-hidden flex items-center">
         <label htmlFor="channel_input" className="absolute left-4">
