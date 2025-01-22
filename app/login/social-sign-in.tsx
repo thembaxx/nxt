@@ -1,6 +1,6 @@
 "use client";
 
-import { , socialSignIn } from "@/lib/auth-client";
+import { socialSignIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -14,7 +14,7 @@ function SocialSignIn() {
         variant="outline"
         type="button"
         onClick={async () => {
-          await socialSignIn('apple');
+          await socialSignIn("apple");
         }}
       >
         <Image
@@ -32,7 +32,7 @@ function SocialSignIn() {
         variant="outline"
         type="button"
         onClick={async () => {
-          await socialSignIn('google');
+          await socialSignIn("google");
         }}
       >
         <Image
@@ -50,7 +50,7 @@ function SocialSignIn() {
         variant="outline"
         type="button"
         onClick={async () => {
-         await socialSignIn('facebook');
+          await socialSignIn("facebook");
         }}
       >
         <Image
