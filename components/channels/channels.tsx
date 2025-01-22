@@ -1,14 +1,21 @@
 "use client";
 
-import { ChannelProvider } from "ably/react";
+import * as Ably from "ably";
+import { AblyProvider, ChannelProvider } from "ably/react";
+import dynamic from "next/dynamic";
 
-import Chat from "./chat";
+const Chat = dynamic(() => import("@/components/channels/chat"), {
+  ssr: false,
+});
 
 function Channels() {
+  const client = new Ably.Realtime({ authUrl: "/api/ably" });
   return (
-    <ChannelProvider channelName={"default"}>
-      <Chat />
-    </ChannelProvider>
+    <AblyProvider client={client}>
+      <ChannelProvider channelName="default">
+        <Chat />
+      </ChannelProvider>
+    </AblyProvider>
   );
 }
 
