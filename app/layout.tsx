@@ -35,8 +35,10 @@ export default function RootLayout({
       >
         <Providers>
           <>
-            <nav className="p-6 top-0 w-full flex-1 flex left-0 fixed z-50">
-              <Navbar />
+            <nav className="p-6 top-0 w-full flex-1 flex left-0 fixed z-50 justify-center">
+              <div className="w-full md:max-w-lg">
+                <Navbar />
+              </div>
             </nav>
             <main className="flex-grow pt-24">{children}</main>
             <Toaster />

@@ -7,8 +7,10 @@ function ChannelsPage() {
       <Head>
         <title>RNXT—Chat</title>
       </Head>
-      <div className="px-6 flex-grow pb-6">
-        <Channels />
+      <div className="px-6 flex-grow pb-6 flex justify-center">
+        <div className="md:max-w-lg w-full">
+          <Channels />
+        </div>
       </div>
     </div>
   );
