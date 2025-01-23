@@ -38,7 +38,7 @@ function MenuPopover({ user, setOpen }: Props) {
           height={20}
           width={20}
         />
-        <span className="text-[#B18CFE]">Channels</span>
+        <span className="text-[#ff9500]">Channels</span>
       </Link>
       <Link
         href={"/about"}

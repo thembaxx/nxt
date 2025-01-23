@@ -6,7 +6,7 @@ import clsx from "clsx";
 import Image from "next/image";
 
 interface ChatMessageCardProps {
-  user: User;
+  user: User | null;
   message: Ably.Message;
   isSent: boolean;
 }

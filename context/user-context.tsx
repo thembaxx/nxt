@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from "@/lib/definitions";
 import React, { createContext, useState, use, ReactNode } from "react";
 

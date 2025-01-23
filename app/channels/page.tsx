@@ -1,4 +1,5 @@
 import Channels from "@/components/channels/channels";
+import UseLayoutEffectParent from "@/components/channels/test";
 import Head from "next/head";
 
 function ChannelsPage() {
@@ -9,7 +10,9 @@ function ChannelsPage() {
       </Head>
       <div className="px-6 grow pb-6 flex justify-center">
         <div className="md:max-w-lg w-full">
-          <Channels />
+          <UseLayoutEffectParent>
+            <Channels />
+          </UseLayoutEffectParent>
         </div>
       </div>
     </div>

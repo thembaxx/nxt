@@ -52,6 +52,10 @@ export function formatFileSize(size: number) {
   }
 }
 
+export function toUpper(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export function getInitials(name: string): string {
   const nameParts = name.split(" ");
   const initials = nameParts
