@@ -45,7 +45,7 @@ function Chat() {
 
   return (
     <div className="flex flex-col h-full space-y-2 ">
-      <div className="flex-grow bg-neutral-900 rounded-xl p-6 overflow-y-auto">
+      <div className="grow bg-neutral-900 rounded-xl p-6 overflow-y-auto">
         {messages && messages.length > 0 && (
           <ul className="flex flex-col space-y-4">
             {messages.map((message, index) => (

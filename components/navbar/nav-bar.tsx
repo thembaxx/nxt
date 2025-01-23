@@ -23,7 +23,7 @@ function Navbar() {
     <div className="w-full">
       <div
         className={clsx(
-          "px-4 w-full relative z-50 flex items-center overflow-hidden justify-between h-14 rounded-2xl shadow-lg bg-neutral-800/90 backdrop-blur-sm",
+          "px-4 w-full relative z-50 flex items-center overflow-hidden justify-between h-14 rounded-2xl shadow-lg bg-neutral-800/90 backdrop-blur-xs",
           menuOpen && "rounded-b-none"
         )}
       >
@@ -89,7 +89,7 @@ function Navbar() {
             visualDuration: 0.2,
             bounce: 0.2,
           }}
-          className="relative bg-neutral-800/90 backdrop-blur-sm w-full -mt-px z-50 overflow-hidden rounded-b-2xl shadow-lg"
+          className="relative bg-neutral-800/90 backdrop-blur-xs w-full -mt-px z-50 overflow-hidden rounded-b-2xl shadow-lg"
         >
           <MenuPopover user={user} open={menuOpen} setOpen={setMenuOpen} />
         </motion.div>

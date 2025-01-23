@@ -140,7 +140,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, Props>(
                             : "opacity-0"
                         )}
                       />
-                      <div className="flex-grow">{option.label}</div>
+                      <div className="grow">{option.label}</div>
                       {renderSuffix && renderSuffix()}
                     </CommandItem>
                   );
@@ -168,7 +168,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, Props>(
                                 : "opacity-0"
                             )}
                           />
-                          <div className="flex-grow">{item.label}</div>
+                          <div className="grow">{item.label}</div>
                           {renderSuffix && renderSuffix()}
                         </CommandItem>
                       ))}

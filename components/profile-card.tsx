@@ -17,7 +17,7 @@ function ProfileCard({ user }: Props) {
           {getInitials(user.name)}
         </AvatarFallback>
       </Avatar>
-      <div className="flex-grow text-[13px] mr-2">
+      <div className="grow text-[13px] mr-2">
         <p className="font-medium truncate">{user.name}</p>
         <p className=" text-neutral-400 truncate">{user.email}</p>
       </div>

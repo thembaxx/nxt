@@ -19,7 +19,7 @@ async function page() {
                 height={24}
               />
               <div className="flex items-center space-x-4">
-                <div className="space-y-1 flex-grow">
+                <div className="space-y-1 grow">
                   <h3 className="text-sm font-medium">Ably Channels</h3>
                   <p className="whitespace-break-spaces text-[13px] font-normal text-muted-foreground">
                     Realtime chat
