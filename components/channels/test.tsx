@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+
+import { useEffect, useState } from "react";
 
 export default function UseLayoutEffectParent(props: {
   children: React.ReactNode;
