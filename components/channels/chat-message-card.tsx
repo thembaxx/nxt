@@ -1,13 +1,13 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
-import * as Ably from "ably";
+import { Message } from "@ably/chat";
 import clsx from "clsx";
 import Image from "next/image";
 
 interface ChatMessageCardProps {
   user: User | null;
-  message: Ably.Message;
+  message: Message;
   isSent: boolean;
 }
 
@@ -56,20 +56,20 @@ export function ChatMessageCard({
           isSent ? "items-end" : "items-start"
         )}
       >
-        {user && user.name && (
-          <p className="text-xs text-neutral-300 font-medium mb-2">
-            {user.name}
-          </p>
-        )}
         <div
           className={cn(
             "rounded-lg px-3 py-2 text-sm",
-            isSent ? "bg-primary text-primary-foreground" : "bg-muted"
+            isSent ? "bg-violet-800 text-white" : "bg-muted"
           )}
         >
-          {message?.data}
+          {user && user.name && (
+            <p className="text-[11px] text-neutral-100 font-medium mb-2">
+              {user.name}
+            </p>
+          )}
+          {message.text}
         </div>
-        <span className="text-xs text-muted-foreground mt-1">
+        <span className="text-xs text-muted-foreground mt-1 pr-0.5">
           {message?.timestamp
             ? new Date(message?.timestamp).toDateString()
             : ""}

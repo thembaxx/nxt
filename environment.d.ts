@@ -19,6 +19,7 @@ namespace NodeJS {
     AUTH_STRIPE_SECRET: string;
     // ABLY
     ABLY_API_KEY: string;
+    AUTH_ABLY_CLIENT_ID: string;
     // GITHUB
     AUTH_GIT_CLIENT_ID: string;
     AUTH_GITHUB_CLIENT_SECRET: string;
