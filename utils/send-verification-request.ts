@@ -11,7 +11,7 @@ type Props = {
 export const sendVerificationRequest = async ({ user, url, token }: Props) => {
   try {
     await resend.emails.send({
-      from: "<NXT Gamma> hello@themba.dev",
+      from: "NXT Gamma <me@themba.dev>",
       to: user.email,
       subject: "Verify your account",
       react: EmailVerificationTemplate({
