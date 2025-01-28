@@ -14,6 +14,7 @@ async function seedUser() {
       image TEXT,
       "createdAt" DATE DEFAULT NOW(),
       "updatedAt" DATE DEFAULT NOW(),
+      "isAnonymous" BOOLEAN,
       PRIMARY KEY("id")
     );
   `;
@@ -25,11 +26,11 @@ async function seedSession() {
   await client.sql`
     CREATE TABLE IF NOT EXISTS "session" (
       id VARCHAR(100) DEFAULT uuid_generate_v4() PRIMARY KEY,
-      "userId" VARCHAR(100),
+      "userId" TEXT,
       token TEXT,
       "expiresAt" DATE,
-      "ipAddress"	VARCHAR(255),
-      "userAgent" VARCHAR(255),
+      "ipAddress"	TEXT,
+      "userAgent" TEXT,
       "createdAt" DATE DEFAULT NOW(),
       "updatedAt" DATE DEFAULT NOW(),
       FOREIGN KEY("userId")
@@ -44,14 +45,15 @@ async function seedAccount() {
   await client.sql`
     CREATE TABLE IF NOT EXISTS "account" (
       id VARCHAR(100) DEFAULT uuid_generate_v4() PRIMARY KEY,
-      "userId" VARCHAR(100),
-      "accountId" VARCHAR(255),
-      "providerId" VARCHAR(255),
-      "accessToken" VARCHAR(255),
-      "refreshToken" VARCHAR(255),
+      "userId" TEXT,
+      "accountId" TEXT,
+      "providerId" TEXT,
+      "idToken" TEXT,
+      "accessToken" TEXT,
+      "refreshToken" TEXT,
       "accessTokenExpiresAt" DATE,
       "refreshTokenExpiresAt" DATE,
-      scope VARCHAR(255),
+      "scope" TEXT,
       password TEXT,
       "createdAt" DATE DEFAULT NOW(),
       "updatedAt" DATE DEFAULT NOW(),
@@ -67,8 +69,8 @@ async function seedVerification() {
   await client.sql`
     CREATE TABLE IF NOT EXISTS "verification" (
       id VARCHAR(100) DEFAULT uuid_generate_v4() PRIMARY KEY,
-      identifier VARCHAR(255),
-      value VARCHAR(255),   
+      "identifier" TEXT,
+      "value" TEXT,   
       "expiresAt" DATE DEFAULT NOW(),
       "createdAt" DATE DEFAULT NOW(),
       "updatedAt" DATE DEFAULT NOW()

@@ -3,6 +3,7 @@ import { VercelPool } from "@vercel/postgres";
 import { nextCookies } from "better-auth/next-js";
 import { sendVerificationRequest } from "../utils/send-verification-request";
 import { sendResetPasswordRequest } from "../utils/send-reset-password-request";
+import { anonymous } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: new VercelPool({
@@ -27,10 +28,6 @@ export const auth = betterAuth({
     },
   },
   socialProviders: {
-    apple: {
-      clientId: process.env.AUTH_APPLE_ID,
-      clientSecret: process.env.AUTH_APPLE_SECRET,
-    },
     google: {
       clientId: process.env.AUTH_GOOGLE_ID as string,
       clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
@@ -40,5 +37,5 @@ export const auth = betterAuth({
       clientSecret: process.env.AUTH_GITHUB_CLIENT_SECRET as string,
     },
   },
-  plugins: [nextCookies()],
+  plugins: [nextCookies(), anonymous()],
 });

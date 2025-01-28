@@ -7,13 +7,22 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import SocialSignIn from "./social-sign-in";
+import { useEffect, useState } from "react";
 
 function LoginPage() {
+  const [selectedTab, setSelectedTab] = useState("");
+
+  useEffect(() => {
+    setSelectedTab("sign-in");
+  }, []);
+
   return (
     <div className="px-6 flex  justify-center w-full">
       <div className="bg-[#0E0E0E] w-full max-w-[600px] md:max-w-sm rounded-xl p-4 shadow-xl">
         <Tabs
           defaultValue="sign-up"
+          value={selectedTab}
+          onChange={console.log}
           className="w-full flex flex-col items-center"
         >
           <TabsList className="mb-4 grid grid-cols-2 w-full md:max-w-[320px]">

@@ -40,7 +40,7 @@ export default function RootLayout({
                 <Navbar />
               </div>
             </nav>
-            <main className="grow pt-24">{children}</main>
+            <main className="grow pt-24 overflow-hidden">{children}</main>
             <Toaster />
           </>
         </Providers>

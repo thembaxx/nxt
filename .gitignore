@@ -22,6 +22,8 @@
 
 # production
 /build
+/better-auth_migrations
+*.sql
 
 # misc
 .DS_Store

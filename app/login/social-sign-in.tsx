@@ -1,10 +1,13 @@
 "use client";
 
-import { socialSignIn } from "@/lib/auth-client";
+import { authClient, socialSignIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 function SocialSignIn() {
+  const router = useRouter();
+
   return (
     <div className="w-full space-y-2">
       <Button
@@ -12,18 +15,20 @@ function SocialSignIn() {
         variant="outline"
         type="button"
         onClick={async () => {
-          await socialSignIn("apple");
+          const user = await authClient.signIn.anonymous({ fetchOptions: {} });
+
+          if (user) router.replace("/home");
         }}
       >
         <Image
           aria-hidden
-          src="/brands/apple_dark.svg"
-          alt="Apple logo"
-          width={16}
-          height={16}
+          src="/icons/detective-fill.svg"
+          alt="Detective logo"
+          width={20}
+          height={20}
           className="absolute left-3"
         />
-        <span>Continue with Apple</span>
+        <span>Sign in anonymously</span>
       </Button>
       <Button
         className="w-full rounded-full relative"

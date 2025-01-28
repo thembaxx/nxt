@@ -6,7 +6,7 @@ import Link from "next/link";
 async function page() {
   return (
     <div className="flex justify-center">
-      <div className="p-6 flex flex-col gap-3 md:max-w-md">
+      <div className="p-6 flex flex-col gap-3 overflow-hidden md:max-w-md">
         <VerifyEmail />
         <div className="grid grid-cols-2 w-full">
           <Link href="/channels" replace>

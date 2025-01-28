@@ -29,11 +29,14 @@ function VerifyEmail() {
           setIsPending(false);
         },
         onError: (ctx) => {
+          setIsPending(false);
           setError(ctx.error.message);
         },
       }
     );
   }
+
+  if (session?.data?.user?.isAnonymous) return null;
 
   if (!session || session.error || session?.data?.user?.emailVerified)
     return null;
@@ -41,15 +44,18 @@ function VerifyEmail() {
   return (
     <div className="bg-neutral-900 border border-orange-300 shadow-lg rounded-2xl p-4">
       <div className="space-y-2">
-        <h1 className="font-bold text-base">
-          {"First, let's verify your email"}
-        </h1>
-        <p className="text-sm text-neutral-400 font-medium text-pretty">
-          Check{" "}
-          <span className="font-semibold text-neutral-300">
-            {session?.data?.user?.email ?? "you email"}
-          </span>{" "}
-          to verify your account and get started.
+        <h1 className="font-bold text-base">First, let's verify your email</h1>
+        <div className="flex overflow-hidden mb-2">
+          <p className="text-sm text-neutral-200 leading-5 font-medium text-pretty w-full truncate line-clamp-1">
+            An email has been sent to
+            <span className="font-semibold text-blue-500 text-xs truncate line-clamp-1">
+              {session?.data?.user?.email ?? "you email"}
+            </span>
+          </p>
+        </div>
+        <p className="text-xs text-neutral-300  text-pretty w-full whitespace-pre-wrap overflow-hidden">
+          click on the link in the email provided to verify your account and get
+          started.
         </p>
       </div>
       <div className="pt-6 space-y-2">
