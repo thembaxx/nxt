@@ -44,7 +44,9 @@ function VerifyEmail() {
   return (
     <div className="bg-neutral-900 border border-orange-300 shadow-lg rounded-2xl p-4">
       <div className="space-y-2">
-        <h1 className="font-bold text-base">First, let's verify your email</h1>
+        <h1 className="font-bold text-base">
+          {"First, let's verify your email"}
+        </h1>
         <div className="flex overflow-hidden mb-2">
           <p className="text-sm text-neutral-200 leading-5 font-medium text-pretty w-full truncate line-clamp-1">
             An email has been sent to
