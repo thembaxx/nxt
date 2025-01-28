@@ -11,7 +11,7 @@ type Props = {
 export const sendResetPasswordRequest = async ({ user, url, token }: Props) => {
   try {
     const resp = await resend.emails.send({
-      from: "NXT <support@nxt.io>",
+      from: "<NXT Gamma> hello@themba.dev",
       to: [user.email],
       subject: "NXT Password Reset",
       react: ResetPasswordEmailTemplate({
