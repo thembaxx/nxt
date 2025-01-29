@@ -20,16 +20,22 @@ function LoginPage() {
     <div className="px-6 flex  justify-center w-full">
       <div className="bg-[#0E0E0E] w-full max-w-[600px] md:max-w-sm rounded-xl p-4 shadow-xl">
         <Tabs
-          defaultValue="sign-up"
-          value={selectedTab}
-          onChange={console.log}
+          defaultValue={selectedTab}
           className="w-full flex flex-col items-center"
         >
           <TabsList className="mb-4 grid grid-cols-2 w-full md:max-w-[320px]">
-            <TabsTrigger className="text-[13px]" value="sign-in">
+            <TabsTrigger
+              className="text-[13px]"
+              value="sign-in"
+              onSelect={() => setSelectedTab("sign-in")}
+            >
               Sign In
             </TabsTrigger>
-            <TabsTrigger className="text-[13px]" value="sign-up">
+            <TabsTrigger
+              className="text-[13px]"
+              value="sign-up"
+              onSelect={() => setSelectedTab("sign-up")}
+            >
               Sign Up
             </TabsTrigger>
           </TabsList>

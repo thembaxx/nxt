@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["ably"],
+  images: {
+    domains: ["plus.unsplash.com"],
+  },
   async headers() {
     return [
       {

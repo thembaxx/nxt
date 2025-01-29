@@ -39,7 +39,7 @@ export default async function Home() {
 
           <Link
             href={"/home"}
-            className="rounded-2xl w-full relative shadow-2xl space-x-3 font-medium py-2 pr-6 pl-2 items-center flex justify-center bg-[#FFAB01] text-neutral-800"
+            className="rounded-2xl w-full relative shadow-2xl space-x-2 font-medium py-2 pr-6 pl-2 items-center flex justify-center bg-blue-300 text-neutral-800"
           >
             <div className="relative">
               <Image
