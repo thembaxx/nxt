@@ -12,19 +12,19 @@ function SearchInput() {
     <div>
       <div
         className={clsx(
-          "h-14 rounded-full relative flex items-center overflow-hidden border bg-neutral-700",
+          "h-16 rounded-2xl relative flex items-center overflow-hidden border bg-neutral-800 shadow-xl",
           focused ? "outline-2 outline-white/60" : ""
         )}
       >
         <Input
           placeholder="Search for workers..."
-          className="border-none outline-none h-full hover:bg-none text-base pl-8 pt-5"
+          className="border-none outline-none h-full hover:bg-none text-base pl-4 pt-6"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
         <label
           htmlFor="search-workers-input"
-          className="flex items-center absolute top-0 left-8 pt-2 text-xs text-neutral-300 font-medium space-x-1"
+          className="flex items-center absolute top-0 left-4 pt-3 text-xs text-neutral-300 font-medium space-x-1"
         >
           <span>39 Springbok Lane, Kempville</span>
           <ChevronDown className="w-4 h-4" />
