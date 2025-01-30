@@ -1,23 +1,34 @@
+import { Feature } from "@/components/acme/feature";
+import { Footer } from "@/components/acme/footer";
 import SearchInput from "@/components/acme/search-input";
-import Image from "next/image";
+import { TestimonialsSectionDemo } from "@/components/acme/testimonials";
+import { Separator } from "@/components/ui/separator";
 
 function Acme() {
   return (
-    <div className="px-6 py-4 space-y-6">
-      <h1 className="font-bold text-neutral-100 text-center text-2xl text-pretty">
-        Build your dream
-      </h1>
-      <SearchInput />
-      {/* <div className="relative rounded-2xl overflow-hidden aspect-video">
-        <Image
-          src="https://plus.unsplash.com/premium_photo-1663050708458-e660c156fb64?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bGFib3VyJTIwd29ya3xlbnwwfHwwfHx8MA%3D%3D"
-          alt=""
-          height={192}
-          width={192}
-          className="w-full"
-          style={{ objectFit: "fill" }}
-        />
-      </div> */}
+    <div className="py-4 space-y-6 overflow-y-auto h-full">
+      <div className="flex px-8 flex-col items-center gap-4 sm:gap-8">
+        <h2 className="max-w-[720px] text-3xl font-semibold leading-tight sm:text-5xl sm:leading-tight">
+          Trusted by developers worldwide
+        </h2>
+        <p className="text-md max-w-[600px] font-medium text-muted-foreground sm:text-xl">
+          Join thousands of developers who are already building the future with
+          our AI platform
+        </p>
+      </div>
+      <div className="px-4">
+        <SearchInput />
+      </div>
+      <div>
+        <TestimonialsSectionDemo />
+      </div>
+      <div className="w-full px-6">
+        <Feature />
+      </div>
+      <Separator />
+      <footer className="px-4">
+        <Footer />
+      </footer>
     </div>
   );
 }
