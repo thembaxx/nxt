@@ -1,3 +1,4 @@
+import { FAQSection } from "@/components/acme/faq-section";
 import { Feature } from "@/components/acme/feature";
 import { Footer } from "@/components/acme/footer";
 import JobTypes from "@/components/acme/job-types";
@@ -35,6 +36,9 @@ function Acme() {
       </div>
       <div>
         <Pricing />
+      </div>
+      <div className="px-6">
+        <FAQSection />
       </div>
       <Separator />
       <footer className="px-4">
