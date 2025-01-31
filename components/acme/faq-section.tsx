@@ -41,7 +41,7 @@ export function FAQSection() {
         Frequently Asked Questions
       </h2>
       <Accordion type="single" collapsible className="w-full">
-        {faqData.map((faq, index, arr) => (
+        {faqData.map((faq, index) => (
           <AccordionItem
             key={index}
             value={`item-${index}`}
