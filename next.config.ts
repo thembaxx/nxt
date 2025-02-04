@@ -3,7 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ["ably"],
   images: {
-    domains: ["plus.unsplash.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+        pathname: "**",
+      },
+    ],
   },
   async headers() {
     return [
