@@ -99,8 +99,8 @@ importers:
         specifier: ^8.5.2
         version: 8.5.2(react@19.0.0)
       framer-motion:
-        specifier: ^12.0.11
-        version: 12.0.11(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^12.1.0
+        version: 12.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       keyv:
         specifier: ^5.2.3
         version: 5.2.3
@@ -108,8 +108,8 @@ importers:
         specifier: ^0.474.0
         version: 0.474.0(react@19.0.0)
       motion:
-        specifier: ^12.0.11
-        version: 12.0.11(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^12.1.0
+        version: 12.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next:
         specifier: 15.1.6
         version: 15.1.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -144,8 +144,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@4.0.3)
       vercel:
-        specifier: ^40.1.0
-        version: 40.1.0
+        specifier: ^41.0.0
+        version: 41.0.0
       zod:
         specifier: ^3.24.1
         version: 3.24.1
@@ -1403,8 +1403,8 @@ packages:
   '@vercel/redwood@2.2.0':
     resolution: {integrity: sha512-THk4lL66eTKioXwun2uIp7EdW/NFFqJnaAnRwNxUrdpU9oHbDsDx3QRIeiOFMVBsaJZqZd9YZ/OMaOMGKotybQ==}
 
-  '@vercel/remix-builder@5.2.0':
-    resolution: {integrity: sha512-VjItqZL+nX/tKhOp+sCG2I930ZAx23tNx14MTpB9PACHS7RL6wJae38OKSSanX56esJffEgyS0Ln1VswVyOrHw==}
+  '@vercel/remix-builder@5.2.1':
+    resolution: {integrity: sha512-5wULMpCKMYTdQeYfAV+fwiGDAG+zMFalwZaLFItWxPCq9OB2Ds02mca6Xz3M4QhTcGlN7l7ihmVFMOu0ZWTPdA==}
 
   '@vercel/routing-utils@5.0.2':
     resolution: {integrity: sha512-uJViB3+HEo+kzHYELs7cQWX5k0kCNvq9G/8nJQX8mP5Ta0fG68CBRmOaaG8A+2xbtTp/QuGORIwV8CsI9ebcNg==}
@@ -2286,8 +2286,8 @@ packages:
     resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
 
-  framer-motion@12.0.11:
-    resolution: {integrity: sha512-1F+YNXr3bSHxt5sCzeCVL56sc4MngbOhdU5ptv02vaepdFYcQd0fZtuAHvFJgMbn5V7SOsaX/3hVqr21ZaCKhA==}
+  framer-motion@12.1.0:
+    resolution: {integrity: sha512-0wc6Zn3Yf1pIKMXIndgEePDaPttRVbSKJMS4E2e999G/UPRgt5i9t3+e+nAy5K7U1STBJ4TXEvB3dPrPJ7IA8g==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -2886,8 +2886,8 @@ packages:
   motion-utils@12.0.0:
     resolution: {integrity: sha512-MNFiBKbbqnmvOjkPyOKgHUp3Q6oiokLkI1bEwm5QA28cxMZrv0CbbBGDNmhF6DIXsi1pCQBSs0dX8xjeER1tmA==}
 
-  motion@12.0.11:
-    resolution: {integrity: sha512-3jagvC6gy/AQn+pw26g7Ti7OAKkcN1srJS77VK6N1xN9wh7AUMtC/htNhWZQ5nIv8FvODW9wdzcuTstzoAt6pA==}
+  motion@12.1.0:
+    resolution: {integrity: sha512-X0Pk3mf2j+FCel6ofBbicGvN5ENXyADPymA0/6O/ER2O72wFIjKkAtXVs07eKn/cBsK9C5Dmz3HHAo3QZUvn1A==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -3755,9 +3755,9 @@ packages:
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
 
-  vercel@40.1.0:
-    resolution: {integrity: sha512-p8FG2zjrCtrhiW8GsJycviMIpKgz/q/rVUFNbucLbWhxfkKp2igF2B//EKsl7FIgmrDK2JW5xpKXU+39tDwJug==}
-    engines: {node: '>= 16'}
+  vercel@41.0.0:
+    resolution: {integrity: sha512-yx8d93+8TO0GO+8PMZ5RG+qZ3nSx1etu6P+Uv74o9gb2JOYlRHki3nyNH+2xNdd6a58UkH1feeoMKUvfhSOvNw==}
+    engines: {node: '>= 18'}
     hasBin: true
 
   web-vitals@0.2.4:
@@ -5128,7 +5128,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/remix-builder@5.2.0':
+  '@vercel/remix-builder@5.2.1':
     dependencies:
       '@vercel/error-utils': 2.0.3
       '@vercel/nft': 0.27.10
@@ -6159,7 +6159,7 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  framer-motion@12.0.11(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  framer-motion@12.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       motion-dom: 12.0.0
       motion-utils: 12.0.0
@@ -6755,9 +6755,9 @@ snapshots:
 
   motion-utils@12.0.0: {}
 
-  motion@12.0.11(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  motion@12.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
-      framer-motion: 12.0.11(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      framer-motion: 12.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       tslib: 2.8.1
     optionalDependencies:
       react: 19.0.0
@@ -7618,7 +7618,7 @@ snapshots:
 
   v8-compile-cache-lib@3.0.1: {}
 
-  vercel@40.1.0:
+  vercel@41.0.0:
     dependencies:
       '@vercel/build-utils': 9.2.0
       '@vercel/fun': 1.1.2
@@ -7628,7 +7628,7 @@ snapshots:
       '@vercel/node': 5.1.0
       '@vercel/python': 4.7.1
       '@vercel/redwood': 2.2.0
-      '@vercel/remix-builder': 5.2.0
+      '@vercel/remix-builder': 5.2.1
       '@vercel/ruby': 2.2.0
       '@vercel/static-build': 2.6.0
       chokidar: 4.0.0
