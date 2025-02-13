@@ -1,7 +1,7 @@
 "use client";
 
 import { User } from "@/lib/definitions";
-import React, { createContext, useState, use, ReactNode } from "react";
+import React, { createContext, useState, ReactNode, useContext } from "react";
 
 type UserContextType = {
   user: User | null;
@@ -25,7 +25,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
 };
 
 export const useUserContext = () => {
-  const context = use(UserContext);
+  const context = useContext(UserContext);
   if (!context) {
     throw new Error("useUserContext must be used within a UserContextProvider");
   }
