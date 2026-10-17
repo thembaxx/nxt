@@ -1,3 +1,23 @@
+# NXT—Lia
+
+A project-browsing interface with a session-aware entry screen and sign-in navigation.
+
+[Browse the source](https://github.com/thembaxx/nxt)
+
+## Engineering highlights
+
+Next.js server-rendered entry logic and reusable application components. Hosted authentication and demo availability are not verified.
+
+## Technology
+
+Declared in [package.json](package.json): Next.js `15.5.24` · React `^19.0.0` · TypeScript `^5.8.2` · Tailwind CSS `^4.0.15` · Motion `^12.5.0` · Framer Motion `^12.5.0` · Better Auth `^1.6.22` · Zod `^3.24.2`.
+
+**Quality tooling:** `lint` scripts are available. See the setup guide below for prerequisites; this documentation pass does not assert that those checks were run.
+
+---
+
+## Project guide
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
